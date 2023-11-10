@@ -21,4 +21,6 @@ public class ProfileEntity extends BaseEntity{
 
     @Column(name = "profile_link", length = 255)
     private String profileLink;
+
+    private Integer memberId;
 }

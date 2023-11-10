@@ -1,5 +1,6 @@
 package com.cookbook.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -25,11 +26,11 @@ public class MemberEntity extends BaseEntity{
     @Column(unique = true)
     private String email;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "profileId",referencedColumnName = "profileId",unique = true)
     private ProfileEntity profile;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "userId",referencedColumnName = "userId",unique = true)
-    private UserEntity userEntity;
+//    @OneToOne(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "userId",referencedColumnName = "userId",unique = true)
+//    private UserEntity userEntity;
 }

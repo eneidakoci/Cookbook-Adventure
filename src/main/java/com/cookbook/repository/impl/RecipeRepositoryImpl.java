@@ -1,12 +1,16 @@
 package com.cookbook.repository.impl;
 import com.cookbook.domain.entity.CommentEntity;
+import com.cookbook.domain.entity.MemberEntity;
 import com.cookbook.domain.entity.RatingEntity;
 import com.cookbook.domain.entity.RecipeEntity;
 import com.cookbook.repository.RecipeRepository;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.PersistenceContext;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -24,6 +28,7 @@ public class RecipeRepositoryImpl implements RecipeRepository {
     private static final String NUMBER_OF_RECIPES_PER_CATEGORY = "SELECT COUNT(r) FROM RecipeEntity r JOIN r.categories c WHERE c.categoryId = :categoryId";
     private static final String NUMBER_OF_RECIPES_BY_MEMBER = "SELECT COUNT(r) FROM RecipeEntity r WHERE r.memberEntity.memberId = :memberId";
     private static final Integer NUMBER_OF_RECIPES_SHOWN = 5;
+    private static final String SELECT_MEMBER_BY_RECIPE = "SELECT r FROM RecipeEntity r WHERE r.member = :member";
     @Override
     public List<RecipeEntity> findAllRecipes() {
         return entityManager.createQuery(SELECT_ALL_RECIPES, RecipeEntity.class)
@@ -36,24 +41,28 @@ public class RecipeRepositoryImpl implements RecipeRepository {
                 .setParameter("recipeId", id)
                 .getSingleResult();
     }
-
+    @Transactional
     @Override
     public RecipeEntity createRecipe(RecipeEntity recipe) {
-        entityManager.merge(recipe);
+        entityManager.persist(recipe);
         return recipe;
     }
-
+    @Transactional
     @Override
     public RecipeEntity updateRecipe(Integer id, RecipeEntity recipe) {
         recipe.setRecipeId(id);
+        recipe.setLastModified(LocalDateTime.now());
         return entityManager.merge(recipe);
     }
-
+    @Transactional
     @Override
-    public void deleteRecipe(Integer id) {
+    public RecipeEntity deleteRecipe(Integer id) {
         RecipeEntity recipe = entityManager.find(RecipeEntity.class, id);
         if(recipe != null){
             entityManager.remove(recipe);
+            return recipe;
+        }else {
+            throw new EntityNotFoundException("Recipe with ID " + id + " not found");
         }
     }
 
@@ -97,5 +106,12 @@ public class RecipeRepositoryImpl implements RecipeRepository {
         return entityManager.createQuery(NUMBER_OF_RECIPES_BY_MEMBER, Integer.class)
                 .setParameter("memberId", memberId)
                 .getSingleResult();
+    }
+
+    @Override
+    public List<RecipeEntity> findRecipesByMember(MemberEntity memberEntity) {
+        return entityManager.createQuery(SELECT_MEMBER_BY_RECIPE, RecipeEntity.class)
+                .setParameter("member", memberEntity)
+                .getResultList();
     }
 }

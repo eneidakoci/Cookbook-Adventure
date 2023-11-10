@@ -58,9 +58,13 @@ public class CategoryController {
     }
 
     @DeleteMapping("/{categoryId}")
-    public ResponseEntity<Void> deleteCategory(@PathVariable Integer categoryId) {
-        categoryService.deleteCategory(categoryId);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<CategoryDTO> deleteCategory(@PathVariable Integer categoryId) {
+        CategoryDTO deletedCategory = categoryService.deleteCategory(categoryId);
+        if (deletedCategory != null) {
+            return ResponseEntity.ok(deletedCategory);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @GetMapping("/{categoryId}/recipes")

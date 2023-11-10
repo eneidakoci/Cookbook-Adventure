@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @EntityListeners(AuditingEntityListener.class)
 public class BaseEntity {
     @CreatedDate
-    @Column(updatable = false)
+    @Column(updatable = false, name = "date_created")
     @Temporal(TemporalType.TIMESTAMP)
     public LocalDateTime createdDate;
 

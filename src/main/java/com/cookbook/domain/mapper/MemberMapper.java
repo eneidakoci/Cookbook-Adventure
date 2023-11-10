@@ -5,7 +5,6 @@ import com.cookbook.domain.dto.MemberRequest;
 import com.cookbook.domain.entity.MemberEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
-@Mapper
 public interface MemberMapper {
     MemberMapper INSTANCE = Mappers.getMapper(MemberMapper.class);
 

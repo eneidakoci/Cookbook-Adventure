@@ -14,7 +14,7 @@ public interface CategoryService {
 
     CategoryDTO updateCategory(Integer id, CategoryDTO categoryDTO);
 
-    void deleteCategory(Integer id);
+    CategoryDTO deleteCategory(Integer id);
 
     List<RecipeDTO> findRecipesByCategoryId(Integer categoryId);
 

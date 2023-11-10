@@ -15,7 +15,7 @@ public interface CategoryRepository {
 
     CategoryEntity updateCategory(Integer id, CategoryEntity category);
 
-    void deleteCategory(Integer id);
+    CategoryEntity deleteCategory(Integer id);
 
     List<RecipeEntity> findRecipesByCategoryId(Integer categoryId);
 

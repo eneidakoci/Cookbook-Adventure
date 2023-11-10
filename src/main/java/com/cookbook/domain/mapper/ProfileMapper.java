@@ -5,7 +5,6 @@ import com.cookbook.domain.dto.ProfileRequest;
 import com.cookbook.domain.entity.ProfileEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
-@Mapper
 public interface ProfileMapper {
     ProfileMapper INSTANCE = Mappers.getMapper(ProfileMapper.class);
 

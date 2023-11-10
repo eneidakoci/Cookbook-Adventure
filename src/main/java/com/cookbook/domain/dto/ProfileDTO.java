@@ -14,11 +14,13 @@ import java.util.Objects;
 public class ProfileDTO extends BaseDomainDTO{
     private Integer profileId;
     private String profileLink;
+    private Integer memberId;
 
-    public ProfileDTO(LocalDateTime createdDate, LocalDateTime lastModified, boolean deleted, Integer profileId, String profileLink) {
+    public ProfileDTO(LocalDateTime createdDate, LocalDateTime lastModified, boolean deleted, Integer profileId, String profileLink, Integer memberId) {
         super(createdDate, lastModified, deleted);
         this.profileId = profileId;
         this.profileLink = profileLink;
+        this.memberId = memberId;
     }
 
     @Override

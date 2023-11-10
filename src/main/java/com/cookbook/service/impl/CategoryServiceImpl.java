@@ -7,10 +7,13 @@ import com.cookbook.domain.entity.CategoryEntity;
 import com.cookbook.domain.entity.RecipeEntity;
 import com.cookbook.domain.mapper.CategoryMapper;
 import com.cookbook.domain.mapper.RecipeMapper;
+import com.cookbook.domain.mapper.impl.CategoryMapperImpl;
+import com.cookbook.domain.mapper.impl.RecipeMapperImpl;
 import com.cookbook.repository.CategoryRepository;
 import com.cookbook.repository.RecipeRepository;
 import com.cookbook.service.CategoryService;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,16 +29,12 @@ public class CategoryServiceImpl implements CategoryService {
     private CategoryRepository categoryRepository;
     @Autowired
     private RecipeRepository recipeRepository;
-    @PersistenceContext
-    private EntityManager entityManager;
-    private CategoryMapper categoryMapper;//spranon autowired
-    private RecipeMapper recipeMapper;
 
     @Override
     public List<CategoryDTO> findAllCategories() {
         List<CategoryEntity> categories = categoryRepository.findAllCategories();
         return categories.stream()
-                .map(categoryMapper::categoryEntityToDto)
+                .map(CategoryMapperImpl::categoryEntityToDto)
                 .toList();
     }
 
@@ -50,9 +49,9 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public CategoryDTO createCategory(CategoryRequest categoryRequest) {
-        CategoryEntity category = categoryMapper.categoryRequestToEntity(categoryRequest);
+        CategoryEntity category = CategoryMapperImpl.categoryRequestToEntity(categoryRequest);
         category = categoryRepository.createCategory(category);
-        return categoryMapper.categoryEntityToDto(category);
+        return CategoryMapperImpl.categoryEntityToDto(category);
     }
 
     @Override
@@ -62,39 +61,38 @@ public class CategoryServiceImpl implements CategoryService {
             CategoryEntity existingCategory = categoryOptional.get();
             existingCategory.setName(categoryDTO.getName());
             CategoryEntity updatedCategory = categoryRepository.createCategory(existingCategory);
-            return categoryMapper.categoryEntityToDto(updatedCategory);
+            return CategoryMapperImpl.categoryEntityToDto(updatedCategory);
         } else {
             return null;
         }
     }
 
     @Override
-    public void deleteCategory(Integer id) {
-        categoryRepository.deleteCategory(id);
+    public CategoryDTO deleteCategory(Integer id) {
+        try {
+            CategoryEntity deletedCategory = categoryRepository.deleteCategory(id);
+            return CategoryMapperImpl.categoryEntityToDto(deletedCategory);
+        } catch (EntityNotFoundException e) {
+            throw new RuntimeException("Category not found with id: " + id);
+        }
     }
 
     @Override
     public List<RecipeDTO> findRecipesByCategoryId(Integer categoryId) {
-        String jpql = "SELECT r FROM RecipeEntity r WHERE r.category.id = :categoryId";
-        TypedQuery<RecipeEntity> query = entityManager.createQuery(jpql, RecipeEntity.class);
-        query.setParameter("categoryId", categoryId);
-        List<RecipeEntity> recipeEntities = query.getResultList();
+        List<RecipeEntity> recipeEntities = categoryRepository.findRecipesByCategoryId(categoryId);
 
         return recipeEntities.stream()
-                .map(recipeMapper::recipeEntityToDto)
+                .map(RecipeMapperImpl::recipeEntityToDto)
                 .toList();
     }
 
 
     @Override
     public List<RecipeDTO> findRecipesByCategoryName(String categoryName) {
-        String jpql = "SELECT r FROM RecipeEntity r WHERE r.category.name = :categoryName";
-        TypedQuery<RecipeEntity> query = entityManager.createQuery(jpql, RecipeEntity.class);
-        query.setParameter("categoryName", categoryName);
-        List<RecipeEntity> recipeEntities = query.getResultList();
+        List<RecipeEntity> recipeEntities = categoryRepository.findRecipesByCategoryName(categoryName);
 
         return recipeEntities.stream()
-                .map(recipeMapper::recipeEntityToDto)
+                .map(RecipeMapperImpl::recipeEntityToDto)
                 .toList();
     }
 

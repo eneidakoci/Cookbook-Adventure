@@ -11,7 +11,8 @@ public interface RatingRepository {
     RatingEntity findRatingById(Integer id);
     RatingEntity createRating(RatingEntity rating);
     RatingEntity updateRating(Integer id, RatingEntity rating);
-    void deleteRating(Integer id);
+    RatingEntity deleteRating(Integer id);
     MemberEntity findMemberByRatingId(Integer ratingId);
     RecipeEntity findRecipeByRatingId(Integer ratingId);
+    List<RatingEntity> findRatingsByMember(MemberEntity memberEntity);
 }

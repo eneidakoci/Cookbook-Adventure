@@ -1,5 +1,6 @@
 package com.cookbook.domain.dto;
 
+import com.cookbook.domain.entity.MemberEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,4 +16,5 @@ public class RecipeRequest extends BaseDomainRequest{
     private String ingredients;
     private String description;
     private Integer likes;
+    private MemberEntity memberEntity;
 }

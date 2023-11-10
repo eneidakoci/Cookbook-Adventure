@@ -11,7 +11,9 @@ public interface CommentRepository {
     CommentEntity findCommentById(Integer id);
     CommentEntity createComment(CommentEntity comment);
     CommentEntity updateComment(Integer id, CommentEntity comment);
-    void deleteComment(Integer id);
+    CommentEntity deleteComment(Integer id);
     MemberEntity findMemberByCommentId(Integer commentId);
     RecipeEntity findRecipeByCommentId(Integer commentId);
+
+    List<CommentEntity> findCommentsByMember(MemberEntity memberEntity);
 }

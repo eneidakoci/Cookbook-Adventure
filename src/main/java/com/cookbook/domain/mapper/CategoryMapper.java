@@ -6,7 +6,7 @@ import com.cookbook.domain.dto.CategoryRequest;
 import com.cookbook.domain.entity.CategoryEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
-@Mapper
+
 public interface CategoryMapper {
     CategoryMapper INSTANCE = Mappers.getMapper(CategoryMapper.class);
 

@@ -11,7 +11,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RatingRequest extends BaseDomainRequest{
-    private MemberEntity memberEntity;
+    private Integer memberId;
     private Integer recipeId;
     private Integer rate;
 }

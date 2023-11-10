@@ -15,7 +15,7 @@ public interface RatingService {
     RatingDTO findRatingById(Integer id);
     RatingDTO createRating(RatingRequest rating);
     RatingDTO updateRating(Integer id, RatingRequest rating);
-    void deleteRating(Integer id);
+    RatingDTO deleteRating(Integer id);
     MemberDTO findMemberByRatingId(Integer ratingId);
     RecipeDTO findRecipeByRatingId(Integer ratingId);
 }

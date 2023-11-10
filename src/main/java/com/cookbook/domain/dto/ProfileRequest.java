@@ -11,4 +11,5 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ProfileRequest extends BaseDomainRequest{
     private String profileLink;
+    private Integer memberId;
 }

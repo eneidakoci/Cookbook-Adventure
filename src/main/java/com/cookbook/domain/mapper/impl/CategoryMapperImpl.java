@@ -3,46 +3,73 @@ package com.cookbook.domain.mapper.impl;
 import com.cookbook.domain.dto.CategoryDTO;
 import com.cookbook.domain.dto.CategoryRequest;
 import com.cookbook.domain.entity.CategoryEntity;
+import com.cookbook.domain.entity.RecipeEntity;
 import com.cookbook.domain.mapper.CategoryMapper;
-public class CategoryMapperImpl implements CategoryMapper {
-    @Override
-    public CategoryDTO categoryEntityToDto(CategoryEntity entity) {
-        if(entity == null){
+import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
+
+
+public class CategoryMapperImpl {
+
+    public static CategoryDTO categoryEntityToDto(CategoryEntity entity) {
+        if (entity == null) {
             return null;
         }
+
         CategoryDTO categoryDTO = new CategoryDTO();
-        categoryDTO.setCategoryId(entity.getCategoryId());
-        categoryDTO.setName(entity.getName());
-        categoryDTO.setDeleted(entity.isDeleted());
+
         categoryDTO.setCreatedDate(entity.getCreatedDate());
         categoryDTO.setLastModified(entity.getLastModified());
-        categoryDTO.setRecipeEntities(entity.getRecipeEntities());
+        categoryDTO.setDeleted(entity.isDeleted());
+        categoryDTO.setCategoryId(entity.getCategoryId());
+        List<RecipeEntity> list = entity.getRecipeEntities();
+        categoryDTO.setName(entity.getName());
+        if (list != null) {
+            categoryDTO.setRecipeEntities(new ArrayList<RecipeEntity>(list));
+        }
         return categoryDTO;
     }
 
-    @Override
-    public CategoryEntity categoryDtoToEntity(CategoryDTO dto) {
-        if(dto == null){
+
+    public static CategoryEntity categoryDtoToEntity(CategoryDTO dto) {
+        if (dto == null) {
             return null;
         }
+
         CategoryEntity categoryEntity = new CategoryEntity();
+
+        categoryEntity.setCreatedDate(dto.getCreatedDate());
+        categoryEntity.setLastModified(dto.getLastModified());
+        categoryEntity.setDeleted(dto.isDeleted());
         categoryEntity.setCategoryId(dto.getCategoryId());
         categoryEntity.setName(dto.getName());
-        categoryEntity.setDeleted(dto.isDeleted());
-        categoryEntity.setRecipeEntities(dto.getRecipeEntities());
-        categoryEntity.setLastModified(dto.getLastModified());
-        categoryEntity.setCreatedDate(dto.getCreatedDate());
+        List<RecipeEntity> list = dto.getRecipeEntities();
+        if (list != null) {
+            categoryEntity.setRecipeEntities(new ArrayList<RecipeEntity>(list));
+        }
+
         return categoryEntity;
     }
-    @Override
-    public CategoryEntity categoryRequestToEntity(CategoryRequest categoryRequest){
-        CategoryEntity category = new CategoryEntity();
-        category.setCreatedDate(categoryRequest.getCreatedDate());
-        category.setRecipeEntities(categoryRequest.getRecipeEntities());
-        category.setName(categoryRequest.getName());
-        category.setDeleted(categoryRequest.isDeleted());
-        category.setLastModified(categoryRequest.getLastModified());
-        return category;
-    }
 
+
+    public static CategoryEntity categoryRequestToEntity(CategoryRequest categoryRequest) {
+        if (categoryRequest == null) {
+            return null;
+        }
+
+        CategoryEntity categoryEntity = new CategoryEntity();
+
+        categoryEntity.setCreatedDate(categoryRequest.getCreatedDate());
+        categoryEntity.setLastModified(categoryRequest.getLastModified());
+        categoryEntity.setDeleted(categoryRequest.isDeleted());
+        categoryEntity.setName(categoryRequest.getName());
+        List<RecipeEntity> list = categoryRequest.getRecipeEntities();
+        if (list != null) {
+            categoryEntity.setRecipeEntities(new ArrayList<RecipeEntity>(list));
+        }
+
+        return categoryEntity;
+    }
 }

@@ -1,6 +1,7 @@
 package com.cookbook.domain.dto;
 
 import com.cookbook.domain.entity.CategoryEntity;
+import com.cookbook.domain.entity.MemberEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,8 +22,9 @@ public class RecipeDTO extends BaseDomainDTO{
     private String ingredients;
     private String description;
     private Integer likes;
+    private MemberEntity memberEntity;
 
-    public RecipeDTO(LocalDateTime createdDate, LocalDateTime lastModified, boolean deleted, Integer recipeId, Set<CategoryEntity> categories, String recipeName, String ingredients, String description, Integer likes) {
+    public RecipeDTO(LocalDateTime createdDate, LocalDateTime lastModified, boolean deleted, Integer recipeId, Set<CategoryEntity> categories, String recipeName, String ingredients, String description, Integer likes, MemberEntity memberEntity) {
         super(createdDate, lastModified, deleted);
         this.recipeId = recipeId;
         this.categories = categories;
@@ -30,6 +32,7 @@ public class RecipeDTO extends BaseDomainDTO{
         this.ingredients = ingredients;
         this.description = description;
         this.likes = likes;
+        this.memberEntity = memberEntity;
     }
 
     @Override
@@ -37,11 +40,11 @@ public class RecipeDTO extends BaseDomainDTO{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         RecipeDTO recipeDTO = (RecipeDTO) o;
-        return Objects.equals(recipeId, recipeDTO.recipeId) && Objects.equals(categories, recipeDTO.categories) && Objects.equals(recipeName, recipeDTO.recipeName) && Objects.equals(ingredients, recipeDTO.ingredients) && Objects.equals(description, recipeDTO.description) && Objects.equals(likes, recipeDTO.likes);
+        return Objects.equals(recipeId, recipeDTO.recipeId) && Objects.equals(categories, recipeDTO.categories) && Objects.equals(recipeName, recipeDTO.recipeName) && Objects.equals(ingredients, recipeDTO.ingredients) && Objects.equals(description, recipeDTO.description) && Objects.equals(likes, recipeDTO.likes) && Objects.equals(memberEntity, recipeDTO.memberEntity);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(recipeId, categories, recipeName, ingredients, description, likes);
+        return Objects.hash(recipeId, categories, recipeName, ingredients, description, likes, memberEntity);
     }
 }

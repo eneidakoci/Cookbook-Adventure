@@ -12,7 +12,7 @@ public interface MemberRepository {
     MemberEntity findMemberById(Integer id);
     MemberEntity createMember(MemberEntity member);
     MemberEntity updateMember(Integer id, MemberEntity member);
-    void deleteMember(Integer id);
+    MemberEntity deleteMember(Integer id);
     List<RecipeEntity> findRecipesByMemberId(Integer memberId);
     List<CommentEntity> findCommentsByMemberId(Integer memberId);
     List<RatingEntity> findRatingsByMemberId(Integer memberId);

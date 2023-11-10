@@ -13,7 +13,7 @@ public interface CommentService {
     CommentDTO findCommentById(Integer id);
     CommentDTO createComment(CommentRequest comment);
     CommentDTO updateComment(Integer id, CommentRequest comment);
-    void deleteComment(Integer id);
+    CommentDTO deleteComment(Integer id);
     MemberDTO findMemberByCommentId(Integer commentId);
     RecipeDTO findRecipeByCommentId(Integer commentId);
 }

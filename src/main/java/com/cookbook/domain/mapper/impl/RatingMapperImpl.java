@@ -4,45 +4,64 @@ import com.cookbook.domain.dto.RatingDTO;
 import com.cookbook.domain.dto.RatingRequest;
 import com.cookbook.domain.entity.RatingEntity;
 import com.cookbook.domain.mapper.RatingMapper;
+import org.springframework.stereotype.Component;
 
-public class RatingMapperImpl implements RatingMapper {
-    @Override
-    public RatingDTO ratingEntityToDto(RatingEntity entity) {
-        if(entity == null){
+public class RatingMapperImpl {
+
+    public static RatingDTO ratingEntityToDto(RatingEntity entity) {
+        if ( entity == null ) {
             return null;
         }
+
         RatingDTO ratingDTO = new RatingDTO();
-        ratingDTO.setDeleted(entity.isDeleted());
-        ratingDTO.setCreatedDate(entity.getCreatedDate());
-        ratingDTO.setLastModified(entity.getLastModified());
-        ratingDTO.setRecipeEntity(entity.getRecipeEntity());
-        ratingDTO.setRatingId(entity.getRatingId());
-        ratingDTO.setRate(entity.getRate());
-        ratingDTO.setMemberEntity(entity.getMemberEntity());
+
+        ratingDTO.setCreatedDate( entity.getCreatedDate() );
+        ratingDTO.setLastModified( entity.getLastModified() );
+        ratingDTO.setDeleted( entity.isDeleted() );
+        ratingDTO.setRatingId( entity.getRatingId() );
+        ratingDTO.setMemberEntity( entity.getMemberEntity() );
+        ratingDTO.setRecipeEntity( entity.getRecipeEntity() );
+        ratingDTO.setRate( entity.getRate() );
+
         return ratingDTO;
     }
 
-    @Override
-    public RatingEntity ratingDtoToEntity(RatingDTO dto) {
+
+    public static RatingEntity ratingDtoToEntity(RatingDTO dto) {
+        if ( dto == null ) {
+            return null;
+        }
+
         RatingEntity ratingEntity = new RatingEntity();
-        ratingEntity.setDeleted(dto.isDeleted());
-        ratingEntity.setCreatedDate(dto.getCreatedDate());
-        ratingEntity.setLastModified(dto.getLastModified());
-        ratingEntity.setRecipeEntity(dto.getRecipeEntity());
-        ratingEntity.setRatingId(dto.getRatingId());
-        ratingEntity.setRate(dto.getRate());
-        ratingEntity.setMemberEntity(dto.getMemberEntity());
+
+        ratingEntity.setCreatedDate( dto.getCreatedDate() );
+        ratingEntity.setLastModified( dto.getLastModified() );
+        ratingEntity.setDeleted( dto.isDeleted() );
+        ratingEntity.setRatingId( dto.getRatingId() );
+        ratingEntity.setMemberEntity( dto.getMemberEntity() );
+        ratingEntity.setRecipeEntity( dto.getRecipeEntity() );
+        if ( dto.getRate() != null ) {
+            ratingEntity.setRate( dto.getRate() );
+        }
+
         return ratingEntity;
     }
 
-    @Override
-    public RatingEntity ratingRequestToEntity(RatingRequest ratingRequest) {
-        RatingEntity rating = new RatingEntity();
-        rating.setDeleted(ratingRequest.isDeleted());
-        rating.setCreatedDate(ratingRequest.getCreatedDate());
-        rating.setLastModified(ratingRequest.getLastModified());
-        rating.setRate(ratingRequest.getRate());
-        rating.setMemberEntity(ratingRequest.getMemberEntity());
-        return rating;
+    public static RatingEntity ratingRequestToEntity(RatingRequest ratingRequest) {
+        if ( ratingRequest == null ) {
+            return null;
+        }
+
+        RatingEntity ratingEntity = new RatingEntity();
+
+        ratingEntity.setCreatedDate( ratingRequest.getCreatedDate() );
+        ratingEntity.setLastModified( ratingRequest.getLastModified() );
+        ratingEntity.setDeleted( ratingRequest.isDeleted() );
+        //ratingEntity.setMemberEntity( ratingRequest.getMemberEntity() );
+        if ( ratingRequest.getRate() != null ) {
+            ratingEntity.setRate( ratingRequest.getRate() );
+        }
+
+        return ratingEntity;
     }
 }

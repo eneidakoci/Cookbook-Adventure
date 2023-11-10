@@ -12,11 +12,16 @@ import java.util.Set;@Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name = "recipe")
+@Entity
+@Table(name = "recipe")
 public class RecipeEntity extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer recipeId;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "member_id")
+    private MemberEntity memberEntity;
 
     @ManyToMany
     @JoinTable(
@@ -37,4 +42,6 @@ public class RecipeEntity extends BaseEntity{
 
     @Column(name = "likes")
     private Integer likes;
+
+
 }

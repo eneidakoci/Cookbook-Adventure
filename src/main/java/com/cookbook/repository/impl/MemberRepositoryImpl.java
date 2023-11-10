@@ -7,8 +7,10 @@ import com.cookbook.domain.entity.RecipeEntity;
 import com.cookbook.repository.MemberRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -34,25 +36,27 @@ public class MemberRepositoryImpl implements MemberRepository {
                 .setParameter("memberId", id)
                 .getSingleResult();
     }
-
+    @Transactional
     @Override
     public MemberEntity createMember(MemberEntity member) {
-        entityManager.merge(member);
+        entityManager.persist(member);
         return member;
     }
-
+    @Transactional
     @Override
     public MemberEntity updateMember(Integer id, MemberEntity member) {
         member.setMemberId(id);
+        member.setLastModified(LocalDateTime.now());
         return entityManager.merge(member);
     }
-
+    @Transactional
     @Override
-    public void deleteMember(Integer id) {
+    public MemberEntity deleteMember(Integer id) {
         MemberEntity member = entityManager.find(MemberEntity.class, id);
         if (member != null) {
             entityManager.remove(member);
         }
+        return member;
     }
 
     @Override

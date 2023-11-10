@@ -15,7 +15,7 @@ public interface RecipeService {
     RecipeDTO findRecipeById(Integer id);
     RecipeDTO createRecipe(RecipeRequest recipe);
     RecipeDTO updateRecipe(Integer id, RecipeRequest recipe);
-    void deleteRecipe(Integer id);
+    RecipeDTO deleteRecipe(Integer id);
     List<CommentDTO> findCommentsByRecipeId(Integer recipeId);
     List<RatingDTO> findRatingsByRecipeId(Integer recipeId);
     List<RecipeDTO> findPopularRecipes();

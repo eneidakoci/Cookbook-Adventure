@@ -21,11 +21,11 @@ public class CommentEntity extends BaseEntity{
     @Column(name = "comment_text", columnDefinition = "TEXT")
     private String commentText;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "member_id")
     private MemberEntity memberEntity;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "recipe_id")
     private RecipeEntity recipeEntity;
 

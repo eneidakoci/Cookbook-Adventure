@@ -5,7 +5,6 @@ import com.cookbook.domain.dto.RatingRequest;
 import com.cookbook.domain.entity.RatingEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
-@Mapper
 public interface RatingMapper {
     RatingMapper INSTANCE = Mappers.getMapper(RatingMapper.class);
 

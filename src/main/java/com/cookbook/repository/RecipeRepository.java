@@ -1,6 +1,7 @@
 package com.cookbook.repository;
 
 import com.cookbook.domain.entity.CommentEntity;
+import com.cookbook.domain.entity.MemberEntity;
 import com.cookbook.domain.entity.RatingEntity;
 import com.cookbook.domain.entity.RecipeEntity;
 
@@ -11,11 +12,13 @@ public interface RecipeRepository {
     RecipeEntity findRecipeById(Integer id);
     RecipeEntity createRecipe(RecipeEntity recipe);
     RecipeEntity updateRecipe(Integer id, RecipeEntity recipe);
-    void deleteRecipe(Integer id);
+    RecipeEntity deleteRecipe(Integer id);
     List<CommentEntity> findCommentsByRecipeId(Integer recipeId);
     List<RatingEntity> findRatingsByRecipeId(Integer recipeId);
     List<RecipeEntity> findPopularRecipes();
     List<RecipeEntity> findNewestRecipes();
     Integer countRecipesByCategory(Integer categoryId);
     Integer countRecipesByMember(Integer memberId);
+
+    List<RecipeEntity> findRecipesByMember(MemberEntity memberEntity);
 }

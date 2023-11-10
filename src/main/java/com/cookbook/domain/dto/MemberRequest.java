@@ -1,5 +1,6 @@
 package com.cookbook.domain.dto;
 
+import com.cookbook.domain.entity.ProfileEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,10 +14,10 @@ public class MemberRequest extends BaseDomainRequest{
     private String name;
     private String lastName;
     private String email;
-    private String profileLink;
+    private ProfileEntity profileEntity;
 
-    public MemberRequest(String username, String profileLink){
+    public MemberRequest(String username, ProfileEntity profileEntity){
         this.name = name;
-        this.profileLink = profileLink;
+        this.profileEntity = profileEntity;
     }
 }
