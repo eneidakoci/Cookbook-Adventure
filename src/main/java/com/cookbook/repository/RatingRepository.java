@@ -15,4 +15,6 @@ public interface RatingRepository {
     MemberEntity findMemberByRatingId(Integer ratingId);
     RecipeEntity findRecipeByRatingId(Integer ratingId);
     List<RatingEntity> findRatingsByMember(MemberEntity memberEntity);
+
+    List<RatingEntity> findRatingsByRecipeId(Integer recipeId);
 }

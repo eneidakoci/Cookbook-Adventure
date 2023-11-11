@@ -24,7 +24,7 @@ public class RecipeRepositoryImpl implements RecipeRepository {
     private static final String SELECT_COMMENTS_BY_RECIPE_ID = "SELECT c FROM CommentEntity c WHERE c.recipeEntity.recipeId = :recipeId";
     private static final String SELECT_RATINGS_BY_RECIPE_ID = "SELECT r FROM RatingEntity r WHERE r.recipeEntity.recipeId = :recipeId";
     private static final String SELECT_POPULAR_RECIPES = "SELECT r FROM RecipeEntity r ORDER BY r.likes DESC";
-    private static final String SELECT_NEWEST_RECIPES = "SELECT r FROM RecipeEntity r ORDER BY r.datePublished DESC";
+    private static final String SELECT_NEWEST_RECIPES = "SELECT r FROM RecipeEntity r ORDER BY r.createdDate DESC";;
     private static final String NUMBER_OF_RECIPES_PER_CATEGORY = "SELECT COUNT(r) FROM RecipeEntity r JOIN r.categories c WHERE c.categoryId = :categoryId";
     private static final String NUMBER_OF_RECIPES_BY_MEMBER = "SELECT COUNT(r) FROM RecipeEntity r WHERE r.memberEntity.memberId = :memberId";
     private static final Integer NUMBER_OF_RECIPES_SHOWN = 5;

@@ -42,8 +42,5 @@ public class MemberDTO extends BaseDomainDTO{
         return Objects.hash(memberId, name, lastName, email, profile);
     }
 
-    public void setProfile(ProfileEntity profile) {
-        this.profile = profile;
-    }
 
 }

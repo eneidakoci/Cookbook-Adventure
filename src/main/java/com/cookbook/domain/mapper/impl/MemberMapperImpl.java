@@ -66,5 +66,4 @@ public class MemberMapperImpl{
         return memberEntity;
     }
 
-
 }

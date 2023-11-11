@@ -80,4 +80,11 @@ public class RatingRepositoryImpl implements RatingRepository {
                 .setParameter("memberEntity", memberEntity)
                 .getResultList();
     }
+
+    @Override
+    public List<RatingEntity> findRatingsByRecipeId(Integer recipeId) {
+        return entityManager.createQuery("SELECT r FROM RatingEntity r WHERE r.recipeEntity.recipeId = :recipeId", RatingEntity.class)
+                .setParameter("recipeId", recipeId)
+                .getResultList();
+    }
 }

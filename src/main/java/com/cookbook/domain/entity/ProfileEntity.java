@@ -1,5 +1,6 @@
 package com.cookbook.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,5 +23,7 @@ public class ProfileEntity extends BaseEntity{
     @Column(name = "profile_link", length = 255)
     private String profileLink;
 
-    private Integer memberId;
+    @OneToOne(mappedBy = "profile", cascade = CascadeType.ALL)
+    @JsonIgnoreProperties("profile")
+    private MemberEntity member;
 }

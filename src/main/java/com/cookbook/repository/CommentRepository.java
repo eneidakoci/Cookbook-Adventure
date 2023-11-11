@@ -16,4 +16,6 @@ public interface CommentRepository {
     RecipeEntity findRecipeByCommentId(Integer commentId);
 
     List<CommentEntity> findCommentsByMember(MemberEntity memberEntity);
+
+    List<CommentEntity> findCommentsByRecipeId(Integer recipeId);
 }

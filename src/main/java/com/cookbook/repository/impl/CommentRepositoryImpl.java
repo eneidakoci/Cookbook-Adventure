@@ -19,6 +19,7 @@ public class CommentRepositoryImpl implements CommentRepository {
 
     private static final String SELECT_ALL_COMMENTS = "SELECT c FROM CommentEntity c";
     private static final String SELECT_COMMENTS_BY_MEMBER = "SELECT c FROM CommentEntity c WHERE c.memberEntity = :memberEntity";
+    private static final String SELECT_COMMENTS_BY_RECIPE ="SELECT c FROM CommentEntity c WHERE c.recipeEntity.recipeId = :recipeId";
     @Override
     public List<CommentEntity> findAllComments() {
         return entityManager.createQuery(SELECT_ALL_COMMENTS, CommentEntity.class)
@@ -80,5 +81,12 @@ public class CommentRepositoryImpl implements CommentRepository {
                     .setParameter("memberEntity", memberEntity)
                     .getResultList();
 
+    }
+
+    @Override
+    public List<CommentEntity> findCommentsByRecipeId(Integer recipeId) {
+        return entityManager.createQuery(SELECT_COMMENTS_BY_RECIPE, CommentEntity.class)
+                .setParameter("recipeId", recipeId)
+                .getResultList();
     }
 }

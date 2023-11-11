@@ -18,7 +18,6 @@ public class ProfileMapperImpl {
         profileDTO.setLastModified( entity.getLastModified() );
         profileDTO.setDeleted( entity.isDeleted() );
         profileDTO.setProfileId( entity.getProfileId() );
-       profileDTO.setMemberId(entity.getMemberId());
         profileDTO.setProfileLink( entity.getProfileLink() );
 
         return profileDTO;
@@ -35,7 +34,6 @@ public class ProfileMapperImpl {
         profileEntity.setLastModified( dto.getLastModified() );
         profileEntity.setDeleted( dto.isDeleted() );
         profileEntity.setProfileId( dto.getProfileId() );
-        profileEntity.setMemberId(dto.getMemberId());
         profileEntity.setProfileLink( dto.getProfileLink() );
 
         return profileEntity;
@@ -51,7 +49,6 @@ public class ProfileMapperImpl {
         profileEntity.setCreatedDate( userProfileRequest.getCreatedDate() );
         profileEntity.setLastModified( userProfileRequest.getLastModified() );
         profileEntity.setDeleted( userProfileRequest.isDeleted() );
-        profileEntity.setMemberId(userProfileRequest.getMemberId());
         profileEntity.setProfileLink( userProfileRequest.getProfileLink() );
 
         return profileEntity;
