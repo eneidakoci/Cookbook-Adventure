@@ -19,6 +19,7 @@ import com.cookbook.service.RatingService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.Optional;
@@ -34,8 +35,8 @@ public class RatingServiceImpl implements RatingService {
 
 
     @Override
-    public List<RatingDTO> findAllRatings() {
-        List<RatingEntity> ratings = ratingRepository.findAllRatings();
+    public List<RatingDTO> findAllRatings(@RequestParam Integer pageNumber, @RequestParam Integer pageSize) {
+        List<RatingEntity> ratings = ratingRepository.findAllRatings(pageNumber, pageSize);
         return ratings.stream().map(RatingMapperImpl::ratingEntityToDto).toList();
     }
 

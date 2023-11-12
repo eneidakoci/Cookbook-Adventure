@@ -26,6 +26,11 @@ public class CategoryDTO extends BaseDomainDTO{
         this.name = name;
     }
 
+    public CategoryDTO(Integer categoryId,String name) {
+        this.categoryId = categoryId;
+        this.name = name;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

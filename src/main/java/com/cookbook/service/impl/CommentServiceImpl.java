@@ -20,6 +20,7 @@ import com.cookbook.service.CommentService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -30,8 +31,8 @@ public class CommentServiceImpl implements CommentService {
     private CommentRepository commentRepository;
 
     @Override
-    public List<CommentDTO> findAllComments() {
-        List<CommentEntity> comments = commentRepository.findAllComments();
+    public List<CommentDTO> findAllComments(@RequestParam Integer pageNumber, @RequestParam Integer pageSize) {
+        List<CommentEntity> comments = commentRepository.findAllComments(pageNumber, pageSize);
         return comments.stream()
                 .map(CommentMapperImpl::commentEntityToDto)
                 .toList();

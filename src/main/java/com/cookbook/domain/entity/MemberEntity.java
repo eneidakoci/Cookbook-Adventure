@@ -26,10 +26,10 @@ public class MemberEntity extends BaseEntity{
     @Column(unique = true)
     private String email;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "profileId",referencedColumnName = "profileId",unique = true)
-    @JsonIgnoreProperties("member")
-    private ProfileEntity profile;
+//    @OneToOne(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "profileId",referencedColumnName = "profileId",unique = true)
+//    @JsonIgnoreProperties("member")
+//    private ProfileEntity profile;
 
 //    @OneToOne(cascade = CascadeType.ALL)
 //    @JoinColumn(name = "userId",referencedColumnName = "userId",unique = true)

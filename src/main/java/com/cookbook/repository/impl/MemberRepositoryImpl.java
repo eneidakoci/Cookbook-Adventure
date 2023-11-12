@@ -9,6 +9,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -25,8 +26,10 @@ public class MemberRepositoryImpl implements MemberRepository {
     private static final String SELECT_RATINGS_BY_MEMBER_ID = "SELECT r FROM RatingEntity r WHERE r.memberEntity.memberId = :memberId";
 
     @Override
-    public List<MemberEntity> findAllMembers() {
+    public List<MemberEntity> findAllMembers(@RequestParam Integer pageNumber, @RequestParam Integer pageSize) {
         return entityManager.createQuery(SELECT_ALL_MEMBERS, MemberEntity.class)
+                .setFirstResult((pageNumber - 1) * pageSize)
+                .setMaxResults(pageSize)
                 .getResultList();
     }
 

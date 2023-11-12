@@ -9,6 +9,7 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -30,8 +31,10 @@ public class RecipeRepositoryImpl implements RecipeRepository {
     private static final Integer NUMBER_OF_RECIPES_SHOWN = 5;
     private static final String SELECT_MEMBER_BY_RECIPE = "SELECT r FROM RecipeEntity r WHERE r.member = :member";
     @Override
-    public List<RecipeEntity> findAllRecipes() {
+    public List<RecipeEntity> findAllRecipes(@RequestParam Integer pageNumber, @RequestParam Integer pageSize) {
         return entityManager.createQuery(SELECT_ALL_RECIPES, RecipeEntity.class)
+                .setFirstResult((pageNumber - 1) * pageSize)
+                .setMaxResults(pageSize)
                 .getResultList();
     }
 

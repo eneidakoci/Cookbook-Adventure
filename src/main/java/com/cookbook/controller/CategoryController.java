@@ -19,8 +19,8 @@ public class CategoryController {
     private CategoryService categoryService;
 
     @GetMapping
-    public ResponseEntity<List<CategoryDTO>> findAllCategories() {
-        List<CategoryDTO> categories = categoryService.findAllCategories();
+    public ResponseEntity<List<CategoryDTO>> findAllCategories(@RequestParam Integer pageNumber, @RequestParam Integer pageSize) {
+        List<CategoryDTO> categories = categoryService.findAllCategories(pageNumber, pageSize);
         return ResponseEntity.ok(categories);
     }
 

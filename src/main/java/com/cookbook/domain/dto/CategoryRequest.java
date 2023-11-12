@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,4 +17,8 @@ import java.util.List;
 public class CategoryRequest extends BaseDomainRequest{
     private String name;
     private List<RecipeEntity> recipeEntities = new ArrayList<>();
+
+    public CategoryRequest(String name) {
+        this.name = name;
+    }
 }

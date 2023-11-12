@@ -23,8 +23,8 @@ public class RatingController {
     }
 
     @GetMapping
-    public ResponseEntity<List<RatingDTO>> findAllRatings() {
-        List<RatingDTO> ratings = ratingService.findAllRatings();
+    public ResponseEntity<List<RatingDTO>> findAllRatings(@RequestParam Integer pageNumber, @RequestParam Integer pageSize) {
+        List<RatingDTO> ratings = ratingService.findAllRatings(pageNumber, pageSize);
         return ResponseEntity.ok(ratings);
     }
 

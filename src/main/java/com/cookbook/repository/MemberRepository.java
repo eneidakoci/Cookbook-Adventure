@@ -8,7 +8,7 @@ import com.cookbook.domain.entity.RecipeEntity;
 import java.util.List;
 
 public interface MemberRepository {
-    List<MemberEntity> findAllMembers();
+    List<MemberEntity> findAllMembers(Integer pageNumber, Integer pageSize);
     MemberEntity findMemberById(Integer id);
     MemberEntity createMember(MemberEntity member);
     MemberEntity updateMember(Integer id, MemberEntity member);

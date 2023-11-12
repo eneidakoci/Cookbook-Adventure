@@ -1,6 +1,6 @@
 package com.cookbook.domain.dto;
 
-import com.cookbook.domain.entity.ProfileEntity;
+//import com.cookbook.domain.entity.ProfileEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,15 +18,15 @@ public class MemberDTO extends BaseDomainDTO{
     private String name;
     private String lastName;
     private String email;
-    private ProfileEntity profile;
+    //private ProfileEntity profile;
 
-    public MemberDTO(LocalDateTime createdDate, LocalDateTime lastModified, boolean deleted, Integer memberId, String name, String lastName, String email, ProfileEntity profile) {
+    public MemberDTO(LocalDateTime createdDate, LocalDateTime lastModified, boolean deleted, Integer memberId, String name, String lastName, String email /*ProfileEntity profile*/) {
         super(createdDate, lastModified, deleted);
         this.memberId = memberId;
         this.name = name;
         this.lastName = lastName;
         this.email = email;
-        this.profile = profile;
+        //this.profile = profile;
     }
 
     @Override
@@ -34,12 +34,12 @@ public class MemberDTO extends BaseDomainDTO{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         MemberDTO memberDTO = (MemberDTO) o;
-        return Objects.equals(memberId, memberDTO.memberId) && Objects.equals(name, memberDTO.name) && Objects.equals(lastName, memberDTO.lastName) && Objects.equals(email, memberDTO.email) && Objects.equals(profile, memberDTO.profile);
+        return Objects.equals(memberId, memberDTO.memberId) && Objects.equals(name, memberDTO.name) && Objects.equals(lastName, memberDTO.lastName) && Objects.equals(email, memberDTO.email);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(memberId, name, lastName, email, profile);
+        return Objects.hash(memberId, name, lastName, email);
     }
 
 

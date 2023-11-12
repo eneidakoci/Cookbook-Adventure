@@ -5,7 +5,7 @@ import com.cookbook.domain.dto.*;
 import java.util.List;
 
 public interface MemberService {
-    List<MemberDTO> findAllMembers();
+    List<MemberDTO> findAllMembers(Integer pageNumber, Integer pageSize);
     MemberDTO findMemberById(Integer id);
     MemberDTO createMember(MemberRequest member);
     MemberDTO updateMember(Integer id, MemberRequest member);

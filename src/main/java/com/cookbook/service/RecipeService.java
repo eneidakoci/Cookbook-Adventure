@@ -7,11 +7,12 @@ import com.cookbook.domain.dto.RecipeRequest;
 import com.cookbook.domain.entity.CommentEntity;
 import com.cookbook.domain.entity.RatingEntity;
 import com.cookbook.domain.entity.RecipeEntity;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
 public interface RecipeService {
-    List<RecipeDTO> findAllRecipes();
+    List<RecipeDTO> findAllRecipes(Integer pageNumber, Integer pageSize);
     RecipeDTO findRecipeById(Integer id);
     RecipeDTO createRecipe(RecipeRequest recipe);
     RecipeDTO updateRecipe(Integer id, RecipeRequest recipe);

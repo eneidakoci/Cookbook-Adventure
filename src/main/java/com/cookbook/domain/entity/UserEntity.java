@@ -1,5 +1,6 @@
 //package com.cookbook.domain.entity;
 //
+//import com.cookbook.domain.enums.Role;
 //import jakarta.persistence.*;
 //import lombok.AllArgsConstructor;
 //import lombok.Getter;
@@ -26,7 +27,8 @@
 //    @Column(unique = true)
 //    private String username;
 //    private String password;
-//    private String roles;
+//    @Enumerated(EnumType.STRING)
+//    private Role role;
 //    @OneToOne(mappedBy = "userEntity")
 //    private MemberEntity memberEntity;
 //
@@ -37,6 +39,18 @@
 //                .collect(Collectors.toList());
 //    }
 //
+//    private String[] newGrantedAuthority() {
+//        switch (role) {
+//            case ADMIN:
+//                return new String[]{"ROLE_ADMIN", "ROLE_USER"};
+//            case USER:
+//                return new String[]{"ROLE_USER"};
+//            case UNAUTHORIZED:
+//                return new String[]{};
+//            default:
+//                return new String[]{};
+//        }
+//    }
 //    @Override
 //    public String getPassword() {
 //        return password;

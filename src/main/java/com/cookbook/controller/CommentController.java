@@ -18,8 +18,8 @@ public class CommentController {
     @Autowired
     private CommentService commentService;
     @GetMapping
-    public ResponseEntity<List<CommentDTO>> findAllComments() {
-        List<CommentDTO> comments = commentService.findAllComments();
+    public ResponseEntity<List<CommentDTO>> findAllComments(@RequestParam Integer pageNumber, @RequestParam Integer pageSize) {
+        List<CommentDTO> comments = commentService.findAllComments(pageNumber, pageSize);
         return ResponseEntity.ok(comments);
     }
 

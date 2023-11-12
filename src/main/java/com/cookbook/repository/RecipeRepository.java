@@ -8,7 +8,7 @@ import com.cookbook.domain.entity.RecipeEntity;
 import java.util.List;
 
 public interface RecipeRepository {
-    List<RecipeEntity> findAllRecipes();
+    List<RecipeEntity> findAllRecipes(Integer pageNumber, Integer pageSize);
     RecipeEntity findRecipeById(Integer id);
     RecipeEntity createRecipe(RecipeEntity recipe);
     RecipeEntity updateRecipe(Integer id, RecipeEntity recipe);

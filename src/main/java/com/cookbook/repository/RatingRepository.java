@@ -7,7 +7,7 @@ import com.cookbook.domain.entity.RecipeEntity;
 import java.util.List;
 
 public interface RatingRepository {
-    List<RatingEntity> findAllRatings();
+    List<RatingEntity> findAllRatings(Integer pageNumber, Integer pageSize);
     RatingEntity findRatingById(Integer id);
     RatingEntity createRating(RatingEntity rating);
     RatingEntity updateRating(Integer id, RatingEntity rating);

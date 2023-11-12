@@ -5,19 +5,15 @@ import com.cookbook.domain.dto.CategoryRequest;
 import com.cookbook.domain.dto.RecipeDTO;
 import com.cookbook.domain.entity.CategoryEntity;
 import com.cookbook.domain.entity.RecipeEntity;
-import com.cookbook.domain.mapper.CategoryMapper;
-import com.cookbook.domain.mapper.RecipeMapper;
 import com.cookbook.domain.mapper.impl.CategoryMapperImpl;
 import com.cookbook.domain.mapper.impl.RecipeMapperImpl;
 import com.cookbook.repository.CategoryRepository;
 import com.cookbook.repository.RecipeRepository;
 import com.cookbook.service.CategoryService;
-import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.TypedQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.Optional;
@@ -27,12 +23,10 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Autowired
     private CategoryRepository categoryRepository;
-    @Autowired
-    private RecipeRepository recipeRepository;
 
     @Override
-    public List<CategoryDTO> findAllCategories() {
-        List<CategoryEntity> categories = categoryRepository.findAllCategories();
+    public List<CategoryDTO> findAllCategories(@RequestParam Integer pageNumber, @RequestParam Integer pageSize) {
+        List<CategoryEntity> categories = categoryRepository.findAllCategories(pageNumber, pageSize);
         return categories.stream()
                 .map(CategoryMapperImpl::categoryEntityToDto)
                 .toList();
@@ -44,7 +38,7 @@ public class CategoryServiceImpl implements CategoryService {
         if (category == null) {
             throw new RuntimeException("Category does not exist.");
         }
-        return CategoryMapper.INSTANCE.categoryEntityToDto(categoryRepository.findCategoryById(id));
+        return CategoryMapperImpl.categoryEntityToDto(categoryRepository.findCategoryById(id));
     }
 
     @Override

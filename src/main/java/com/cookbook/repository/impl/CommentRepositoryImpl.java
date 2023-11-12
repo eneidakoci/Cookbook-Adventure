@@ -8,6 +8,7 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -21,8 +22,10 @@ public class CommentRepositoryImpl implements CommentRepository {
     private static final String SELECT_COMMENTS_BY_MEMBER = "SELECT c FROM CommentEntity c WHERE c.memberEntity = :memberEntity";
     private static final String SELECT_COMMENTS_BY_RECIPE ="SELECT c FROM CommentEntity c WHERE c.recipeEntity.recipeId = :recipeId";
     @Override
-    public List<CommentEntity> findAllComments() {
+    public List<CommentEntity> findAllComments(@RequestParam Integer pageNumber, @RequestParam Integer pageSize) {
         return entityManager.createQuery(SELECT_ALL_COMMENTS, CommentEntity.class)
+                .setFirstResult((pageNumber - 1) * pageSize)
+                .setMaxResults(pageSize)
                 .getResultList();
     }
 

@@ -8,6 +8,7 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -24,8 +25,10 @@ public class RatingRepositoryImpl implements RatingRepository {
 
     private static final String SELECT_RATINGS_BY_MEMBER = "SELECT r FROM RatingEntity r WHERE r.memberEntity = :memberEntity";
     @Override
-    public List<RatingEntity> findAllRatings() {
+    public List<RatingEntity> findAllRatings(@RequestParam Integer pageNumber, @RequestParam Integer pageSize) {
         return entityManager.createQuery(SELECT_ALL_RATINGS, RatingEntity.class)
+                .setFirstResult((pageNumber - 1) * pageSize)
+                .setMaxResults(pageSize)
                 .getResultList();
     }
 

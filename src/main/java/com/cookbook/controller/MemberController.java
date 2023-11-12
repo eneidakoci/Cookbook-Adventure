@@ -17,8 +17,8 @@ public class MemberController {
     @Autowired
     private MemberService memberService;
     @GetMapping
-    public ResponseEntity<List<MemberDTO>> findAllMembers() {
-        List<MemberDTO> members = memberService.findAllMembers();
+    public ResponseEntity<List<MemberDTO>> findAllMembers(@RequestParam Integer pageNumber, @RequestParam Integer pageSize) {
+        List<MemberDTO> members = memberService.findAllMembers(pageNumber, pageSize);
         return ResponseEntity.ok(members);
     }
 

@@ -19,6 +19,7 @@ import com.cookbook.service.RecipeService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -32,8 +33,8 @@ public class RecipeServiceImpl implements RecipeService {
     private RatingRepository ratingRepository;
 
     @Override
-    public List<RecipeDTO> findAllRecipes() {
-        List<RecipeEntity> recipes = recipeRepository.findAllRecipes();
+    public List<RecipeDTO> findAllRecipes(@RequestParam Integer pageNumber, @RequestParam Integer pageSize) {
+        List<RecipeEntity> recipes = recipeRepository.findAllRecipes(pageNumber, pageSize);
         return recipes.stream()
                 .map(RecipeMapperImpl::recipeEntityToDto)
                 .toList();

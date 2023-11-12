@@ -11,7 +11,7 @@ import com.cookbook.domain.entity.RecipeEntity;
 import java.util.List;
 
 public interface RatingService {
-    List<RatingDTO> findAllRatings();
+    List<RatingDTO> findAllRatings(Integer pageNumber, Integer pageSize);
     RatingDTO findRatingById(Integer id);
     RatingDTO createRating(RatingRequest rating);
     RatingDTO updateRating(Integer id, RatingRequest rating);

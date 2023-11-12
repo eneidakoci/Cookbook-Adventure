@@ -8,6 +8,7 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -24,8 +25,10 @@ public class CategoryRepositoryImpl implements CategoryRepository {
     private static final String SELECT_RECIPES_BY_CATEGORY_NAME = "SELECT r FROM RecipeEntity r WHERE :categoryName MEMBER OF r.categories";
 
     @Override
-    public List<CategoryEntity> findAllCategories() {
+    public List<CategoryEntity> findAllCategories(@RequestParam Integer pageNumber, @RequestParam Integer pageSize) {
         return entityManager.createQuery(SELECT_ALL_CATEGORIES, CategoryEntity.class)
+                .setFirstResult((pageNumber - 1) * pageSize)
+                .setMaxResults(pageSize)
                 .getResultList();
     }
 

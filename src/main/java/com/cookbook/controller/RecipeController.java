@@ -20,8 +20,8 @@ public class RecipeController {
     private RecipeService recipeService;
 
     @GetMapping
-    public ResponseEntity<List<RecipeDTO>> findAllRecipes() {
-        List<RecipeDTO> recipes = recipeService.findAllRecipes();
+    public ResponseEntity<List<RecipeDTO>> findAllRecipes(@RequestParam Integer pageNumber, @RequestParam Integer pageSize) {
+        List<RecipeDTO> recipes = recipeService.findAllRecipes(pageNumber, pageSize);
         return ResponseEntity.ok(recipes);
     }
 
@@ -92,15 +92,22 @@ public class RecipeController {
         return ResponseEntity.ok(newestRecipes);
     }
 
-    @GetMapping("/countByCategory")
-    public ResponseEntity<Integer> countRecipesByCategory(@RequestParam Integer categoryId) {
-        Integer count = recipeService.countRecipesByCategory(categoryId);
-        return ResponseEntity.ok(count);
-    }
+//    @GetMapping("/countByCategory")
+//    public ResponseEntity<Integer> countRecipesByCategory(@RequestParam Integer categoryId) {
+//        if (categoryId == null || categoryId < 1) {
+//            return ResponseEntity.badRequest().build();
+//        }
+//        Integer count = recipeService.countRecipesByCategory(categoryId);
+//        return ResponseEntity.ok(count);
+//    }
+//
+//    @GetMapping("/countByMember")
+//    public ResponseEntity<Integer> countRecipesByMember(@RequestParam Integer memberId) {
+//        if (memberId == null || memberId < 1) {
+//            return ResponseEntity.badRequest().build();
+//        }
+//        Integer count = recipeService.countRecipesByMember(memberId);
+//        return ResponseEntity.ok(count);
+//    }
 
-    @GetMapping("/countByMember")
-    public ResponseEntity<Integer> countRecipesByMember(@RequestParam Integer memberId) {
-        Integer count = recipeService.countRecipesByMember(memberId);
-        return ResponseEntity.ok(count);
-    }
 }

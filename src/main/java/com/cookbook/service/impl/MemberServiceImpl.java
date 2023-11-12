@@ -5,10 +5,7 @@ import com.cookbook.domain.entity.CommentEntity;
 import com.cookbook.domain.entity.MemberEntity;
 import com.cookbook.domain.entity.RatingEntity;
 import com.cookbook.domain.entity.RecipeEntity;
-import com.cookbook.domain.mapper.impl.CommentMapperImpl;
-import com.cookbook.domain.mapper.impl.MemberMapperImpl;
-import com.cookbook.domain.mapper.impl.RatingMapperImpl;
-import com.cookbook.domain.mapper.impl.RecipeMapperImpl;
+import com.cookbook.domain.mapper.impl.*;
 import com.cookbook.repository.CommentRepository;
 import com.cookbook.repository.MemberRepository;
 import com.cookbook.repository.RatingRepository;
@@ -16,7 +13,9 @@ import com.cookbook.repository.RecipeRepository;
 import com.cookbook.service.MemberService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -33,8 +32,8 @@ public class MemberServiceImpl implements MemberService {
     private RatingRepository ratingRepository;
 
     @Override
-    public List<MemberDTO> findAllMembers() {
-        List<MemberEntity> members = memberRepository.findAllMembers();
+    public List<MemberDTO> findAllMembers(@RequestParam Integer pageNumber, @RequestParam Integer pageSize) {
+        List<MemberEntity> members = memberRepository.findAllMembers(pageNumber, pageSize);
         return members.stream()
                 .map(MemberMapperImpl::memberEntityToDto)
                 .toList();
@@ -60,6 +59,7 @@ public class MemberServiceImpl implements MemberService {
             MemberEntity updatedMemberEntity = MemberMapperImpl.memberRequestToEntity(member);
             updatedMemberEntity.setMemberId(id);
             MemberEntity savedMemberEntity = memberRepository.updateMember(id, updatedMemberEntity);
+//            savedMemberEntity.setProfile(member.getProfileEntity());
             return MemberMapperImpl.memberEntityToDto(savedMemberEntity);
         }
         return null;

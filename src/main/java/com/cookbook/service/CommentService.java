@@ -9,7 +9,7 @@ import com.cookbook.domain.entity.CommentEntity;
 import java.util.List;
 
 public interface CommentService {
-    List<CommentDTO> findAllComments();
+    List<CommentDTO> findAllComments(Integer pageNumber, Integer pageSize);
     CommentDTO findCommentById(Integer id);
     CommentDTO createComment(CommentRequest comment);
     CommentDTO updateComment(Integer id, CommentRequest comment);
