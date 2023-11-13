@@ -51,10 +51,6 @@ public class LoggingAspect {
 
         logger.info("AroundAdvice - Method call: " + joinPoint.getSignature() + " took: " + executionTime + " millis to proceed.");
 
-        long threshold = 100;
-        if (executionTime > threshold) {
-            logger.warn("Execution time exceeds the threshold!");
-        }
         return execution;
     }
 }

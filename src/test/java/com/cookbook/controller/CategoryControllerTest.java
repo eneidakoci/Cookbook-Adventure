@@ -74,6 +74,7 @@ public class CategoryControllerTest {
         Assertions.assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, putResponse.getStatusCode());
     }
 
+
 //    @Test
 //    void test_shouldReturnStatus204DeletedWhenCategoryIsDeleted() {
 //        ResponseEntity<Void> deleteResponse = restTemplate

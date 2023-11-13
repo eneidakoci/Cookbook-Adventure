@@ -1,5 +1,6 @@
 package com.cookbook.controller;
 
+import com.cookbook.aspect.MeasureTime;
 import com.cookbook.domain.dto.CategoryDTO;
 import com.cookbook.domain.dto.CategoryRequest;
 import com.cookbook.domain.dto.RecipeDTO;
@@ -18,6 +19,7 @@ public class CategoryController {
     @Autowired
     private CategoryService categoryService;
 
+    @MeasureTime
     @GetMapping
     public ResponseEntity<List<CategoryDTO>> findAllCategories(@RequestParam Integer pageNumber, @RequestParam Integer pageSize) {
         List<CategoryDTO> categories = categoryService.findAllCategories(pageNumber, pageSize);
@@ -46,9 +48,8 @@ public class CategoryController {
     }
 
     @PutMapping("/{categoryId}")
-    public ResponseEntity<CategoryDTO> updateCategory(
-            @PathVariable Integer categoryId,
-            @RequestBody CategoryDTO categoryDTO) {
+    public ResponseEntity<CategoryDTO> updateCategory(@PathVariable Integer categoryId,
+                                                      @RequestBody CategoryDTO categoryDTO) {
         CategoryDTO updatedCategory = categoryService.updateCategory(categoryId, categoryDTO);
         if (updatedCategory != null) {
             return ResponseEntity.ok(updatedCategory);
@@ -78,6 +79,7 @@ public class CategoryController {
         List<RecipeDTO> recipes = categoryService.findRecipesByCategoryName(categoryName);
         return ResponseEntity.ok(recipes);
     }
+
     @GetMapping("/error")
     public ResponseEntity<String> handleError() {
         return ResponseEntity.ok().body("Error happened");
