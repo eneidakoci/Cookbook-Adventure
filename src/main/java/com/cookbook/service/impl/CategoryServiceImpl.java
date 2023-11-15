@@ -5,10 +5,10 @@ import com.cookbook.domain.dto.CategoryRequest;
 import com.cookbook.domain.dto.RecipeDTO;
 import com.cookbook.domain.entity.CategoryEntity;
 import com.cookbook.domain.entity.RecipeEntity;
+import com.cookbook.domain.exception.ResourceNotFoundException;
 import com.cookbook.domain.mapper.impl.CategoryMapperImpl;
 import com.cookbook.domain.mapper.impl.RecipeMapperImpl;
 import com.cookbook.repository.CategoryRepository;
-import com.cookbook.repository.RecipeRepository;
 import com.cookbook.service.CategoryService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,10 +33,10 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public CategoryDTO findCategoryById(Integer id) {
+    public CategoryDTO findCategoryById(Integer id) throws ResourceNotFoundException {
         CategoryEntity category = categoryRepository.findCategoryById(id);
         if (category == null) {
-            throw new RuntimeException("Category does not exist.");
+            throw new ResourceNotFoundException("Category does not exist.");
         }
         return CategoryMapperImpl.categoryEntityToDto(categoryRepository.findCategoryById(id));
     }

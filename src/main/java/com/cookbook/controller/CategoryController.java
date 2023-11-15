@@ -4,6 +4,7 @@ import com.cookbook.aspect.MeasureTime;
 import com.cookbook.domain.dto.CategoryDTO;
 import com.cookbook.domain.dto.CategoryRequest;
 import com.cookbook.domain.dto.RecipeDTO;
+import com.cookbook.domain.exception.GenericException;
 import com.cookbook.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -38,6 +39,9 @@ public class CategoryController {
 
     @PostMapping
     public ResponseEntity<CategoryDTO> createCategory(@RequestBody CategoryRequest categoryRequest) {
+        if(categoryRequest.getName() == null || categoryRequest.getName().isEmpty()){
+            throw new GenericException("Category name is required.");
+        }
         CategoryDTO createdCategory = categoryService.createCategory(categoryRequest);
         if (createdCategory != null) {
             URI locationOfCreatedCategory = URI.create("/api/categories/" + createdCategory.getCategoryId());

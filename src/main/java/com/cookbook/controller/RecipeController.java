@@ -1,9 +1,11 @@
 package com.cookbook.controller;
 
+import com.cookbook.aspect.MeasureTime;
 import com.cookbook.domain.dto.CommentDTO;
 import com.cookbook.domain.dto.RatingDTO;
 import com.cookbook.domain.dto.RecipeDTO;
 import com.cookbook.domain.dto.RecipeRequest;
+import com.cookbook.domain.exception.GenericException;
 import com.cookbook.service.RecipeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +20,7 @@ public class RecipeController {
 
     @Autowired
     private RecipeService recipeService;
-
+    @MeasureTime
     @GetMapping
     public ResponseEntity<List<RecipeDTO>> findAllRecipes(@RequestParam Integer pageNumber, @RequestParam Integer pageSize) {
         List<RecipeDTO> recipes = recipeService.findAllRecipes(pageNumber, pageSize);
@@ -37,6 +39,9 @@ public class RecipeController {
 
     @PostMapping
     public ResponseEntity<RecipeDTO> createRecipe(@RequestBody RecipeRequest recipeRequest) {
+        if(recipeRequest.getRecipeName() == null || recipeRequest.getRecipeName().isEmpty()){
+            throw new GenericException("Recipe name is required.");
+        }
         RecipeDTO createdRecipe = recipeService.createRecipe(recipeRequest);
         if (createdRecipe != null) {
             URI locationOfCreatedRecipe = URI.create("/api/recipes/" + createdRecipe.getRecipeId());

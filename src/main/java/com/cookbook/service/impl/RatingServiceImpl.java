@@ -8,6 +8,7 @@ import com.cookbook.domain.entity.CommentEntity;
 import com.cookbook.domain.entity.MemberEntity;
 import com.cookbook.domain.entity.RatingEntity;
 import com.cookbook.domain.entity.RecipeEntity;
+import com.cookbook.domain.exception.ResourceNotFoundException;
 import com.cookbook.domain.mapper.RatingMapper;
 import com.cookbook.domain.mapper.impl.MemberMapperImpl;
 import com.cookbook.domain.mapper.impl.RatingMapperImpl;
@@ -28,11 +29,6 @@ import java.util.Optional;
 public class RatingServiceImpl implements RatingService {
     @Autowired
     private RatingRepository ratingRepository;
-    @Autowired
-    private MemberRepository memberRepository;
-    @Autowired
-    private RecipeRepository recipeRepository;
-
 
     @Override
     public List<RatingDTO> findAllRatings(@RequestParam Integer pageNumber, @RequestParam Integer pageSize) {
@@ -41,8 +37,11 @@ public class RatingServiceImpl implements RatingService {
     }
 
     @Override
-    public RatingDTO findRatingById(Integer id) {
+    public RatingDTO findRatingById(Integer id) throws ResourceNotFoundException{
         RatingEntity ratingEntity = ratingRepository.findRatingById(id);
+        if(ratingEntity == null){
+            throw new ResourceNotFoundException("Rating does not exist.");
+        }
         return RatingMapperImpl.ratingEntityToDto(ratingEntity);
     }
 

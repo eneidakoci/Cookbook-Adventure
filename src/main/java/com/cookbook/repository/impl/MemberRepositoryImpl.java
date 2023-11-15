@@ -43,6 +43,8 @@ public class MemberRepositoryImpl implements MemberRepository {
     @Override
     public MemberEntity createMember(MemberEntity member) {
         entityManager.persist(member);
+        member.setCreatedDate(LocalDateTime.now());
+        member.setLastModified(LocalDateTime.now());
         return member;
     }
     @Transactional

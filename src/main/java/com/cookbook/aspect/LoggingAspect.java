@@ -7,10 +7,11 @@ import org.aspectj.lang.annotation.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
 @Aspect
-@Component
+@Configuration
 public class LoggingAspect {
 
     private final Logger logger = LoggerFactory.getLogger(LoggingAspect.class);
@@ -46,7 +47,9 @@ public class LoggingAspect {
     public Object aroundAdvice(ProceedingJoinPoint joinPoint) throws Throwable {
         long timeBefore = System.currentTimeMillis();
         var execution = joinPoint.proceed();
+        logger.info("AroundAdvice - Method call: " + joinPoint.getSignature() +" started executing.");
         long timeAfter = System.currentTimeMillis();
+        logger.info("AroundAdvice - Method call: " + joinPoint.getSignature() +" ended executing.");
         long executionTime = timeAfter - timeBefore;
 
         logger.info("AroundAdvice - Method call: " + joinPoint.getSignature() + " took: " + executionTime + " millis to proceed.");

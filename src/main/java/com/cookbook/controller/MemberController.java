@@ -1,7 +1,9 @@
 package com.cookbook.controller;
 
+import com.cookbook.aspect.MeasureTime;
 import com.cookbook.domain.dto.*;
 import com.cookbook.domain.entity.MemberEntity;
+import com.cookbook.domain.exception.GenericException;
 import com.cookbook.domain.mapper.impl.MemberMapperImpl;
 import com.cookbook.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,7 @@ import java.util.List;
 public class MemberController {
     @Autowired
     private MemberService memberService;
+    @MeasureTime
     @GetMapping
     public ResponseEntity<List<MemberDTO>> findAllMembers(@RequestParam Integer pageNumber, @RequestParam Integer pageSize) {
         List<MemberDTO> members = memberService.findAllMembers(pageNumber, pageSize);
@@ -34,6 +37,9 @@ public class MemberController {
 
     @PostMapping
     public ResponseEntity<MemberDTO> createMember(@RequestBody MemberRequest memberRequest) {
+        if(memberRequest.getName() == null || memberRequest.getName().isEmpty()){
+            throw new GenericException("Member name is required.");
+        }
         MemberDTO createdMember = memberService.createMember(memberRequest);
         if (createdMember != null) {
             URI locationOfCreatedMember = URI.create("/api/members/" + createdMember.getMemberId());

@@ -8,6 +8,7 @@ import com.cookbook.domain.entity.CategoryEntity;
 import com.cookbook.domain.entity.CommentEntity;
 import com.cookbook.domain.entity.MemberEntity;
 import com.cookbook.domain.entity.RecipeEntity;
+import com.cookbook.domain.exception.ResourceNotFoundException;
 import com.cookbook.domain.mapper.CommentMapper;
 import com.cookbook.domain.mapper.MemberMapper;
 import com.cookbook.domain.mapper.RecipeMapper;
@@ -39,8 +40,11 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public CommentDTO findCommentById(Integer id) {
+    public CommentDTO findCommentById(Integer id) throws ResourceNotFoundException {
         CommentEntity commentEntity = commentRepository.findCommentById(id);
+        if(commentEntity == null){
+            throw new ResourceNotFoundException("Comment does not exist.");
+        }
         return CommentMapperImpl.commentEntityToDto(commentEntity);
     }
 

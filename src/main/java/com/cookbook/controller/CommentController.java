@@ -1,9 +1,11 @@
 package com.cookbook.controller;
 
+import com.cookbook.aspect.MeasureTime;
 import com.cookbook.domain.dto.CommentDTO;
 import com.cookbook.domain.dto.CommentRequest;
 import com.cookbook.domain.dto.MemberDTO;
 import com.cookbook.domain.dto.RecipeDTO;
+import com.cookbook.domain.exception.GenericException;
 import com.cookbook.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +20,7 @@ public class CommentController {
     @Autowired
     private CommentService commentService;
 
+    @MeasureTime
     @GetMapping
     public ResponseEntity<List<CommentDTO>> findAllComments(@RequestParam Integer pageNumber, @RequestParam Integer pageSize) {
         List<CommentDTO> comments = commentService.findAllComments(pageNumber, pageSize);

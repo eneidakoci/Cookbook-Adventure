@@ -5,6 +5,7 @@ import com.cookbook.domain.entity.CommentEntity;
 import com.cookbook.domain.entity.MemberEntity;
 import com.cookbook.domain.entity.RatingEntity;
 import com.cookbook.domain.entity.RecipeEntity;
+import com.cookbook.domain.exception.ResourceNotFoundException;
 import com.cookbook.domain.mapper.impl.*;
 import com.cookbook.repository.CommentRepository;
 import com.cookbook.repository.MemberRepository;
@@ -40,8 +41,11 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public MemberDTO findMemberById(Integer id) {
+    public MemberDTO findMemberById(Integer id) throws ResourceNotFoundException{
         MemberEntity memberEntity = memberRepository.findMemberById(id);
+        if(memberEntity == null){
+            throw new ResourceNotFoundException("Member does not exist.");
+        }
         return MemberMapperImpl.memberEntityToDto(memberEntity);
     }
 

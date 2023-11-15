@@ -2,11 +2,13 @@ package com.cookbook.repository.impl;
 
 import com.cookbook.domain.entity.CategoryEntity;
 import com.cookbook.domain.entity.RecipeEntity;
+import com.cookbook.domain.exception.ResourceNotFoundException;
 import com.cookbook.repository.CategoryRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
+import org.hibernate.boot.model.source.spi.RelationalValueSource;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -34,15 +36,22 @@ public class CategoryRepositoryImpl implements CategoryRepository {
 
     @Override
     public CategoryEntity findCategoryById(Integer id) {
-        return entityManager.createQuery(SELECT_CATEGORY_BY_ID, CategoryEntity.class)
+        var entity= entityManager.createQuery(SELECT_CATEGORY_BY_ID, CategoryEntity.class)
                 .setParameter("categoryId", id)
                 .getSingleResult();
+        if(entity == null){
+            throw new ResourceNotFoundException("Not found");
+        }else{
+            return entity;
+        }
     }
 
     @Transactional
     @Override
     public CategoryEntity createCategory(CategoryEntity category) {
         entityManager.persist(category);
+        category.setCreatedDate(LocalDateTime.now());
+        category.setLastModified(LocalDateTime.now());
         return category;
     }
 

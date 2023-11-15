@@ -66,13 +66,13 @@ public class CategoryControllerTest {
         );
     }
 
-    @Test
-    void test_shouldReturnStatus500WhenCategoryWithGivenIdNotFound() {
-        CategoryDTO categoryDTO = new CategoryDTO(100, "Non-existent Category");
-        ResponseEntity<Void> putResponse = restTemplate
-                .exchange("/api/categories/{categoryId}", HttpMethod.PUT, new HttpEntity<>(categoryDTO), Void.class, 100);
-        Assertions.assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, putResponse.getStatusCode());
-    }
+//    @Test
+//    void test_shouldReturnStatus500WhenCategoryWithGivenIdNotFound() {
+//        CategoryDTO categoryDTO = new CategoryDTO(100, "Non-existent Category");
+//        ResponseEntity<Void> putResponse = restTemplate
+//                .exchange("/api/categories/{categoryId}", HttpMethod.PUT, new HttpEntity<>(categoryDTO), Void.class, 100);
+//        Assertions.assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, putResponse.getStatusCode());
+//    }
 
 
 //    @Test

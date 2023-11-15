@@ -1,7 +1,7 @@
-package com.cookbook.domain.enums;
-
-public enum Role {
-    ADMIN,
-    USER,
-    UNAUTHORIZED
-}
+//package com.cookbook.domain.enums;
+//
+//public enum Role {
+//    ADMIN,
+//    USER,
+//    UNAUTHORIZED
+//}

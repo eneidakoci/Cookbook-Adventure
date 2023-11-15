@@ -1,9 +1,11 @@
 package com.cookbook.controller;
 
+import com.cookbook.aspect.MeasureTime;
 import com.cookbook.domain.dto.MemberDTO;
 import com.cookbook.domain.dto.RatingDTO;
 import com.cookbook.domain.dto.RatingRequest;
 import com.cookbook.domain.dto.RecipeDTO;
+import com.cookbook.domain.exception.GenericException;
 import com.cookbook.service.RatingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +16,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/ratings")
 public class RatingController {
-
     private final RatingService ratingService;
 
     @Autowired
@@ -22,6 +23,7 @@ public class RatingController {
         this.ratingService = ratingService;
     }
 
+    @MeasureTime
     @GetMapping
     public ResponseEntity<List<RatingDTO>> findAllRatings(@RequestParam Integer pageNumber, @RequestParam Integer pageSize) {
         List<RatingDTO> ratings = ratingService.findAllRatings(pageNumber, pageSize);
@@ -40,6 +42,9 @@ public class RatingController {
 
     @PostMapping
     public ResponseEntity<RatingDTO> createRating(@RequestBody RatingRequest ratingRequest) {
+        if(ratingRequest.getRate() == null ){
+            throw new GenericException("Rating is required.");
+        }
         RatingDTO createdRating = ratingService.createRating(ratingRequest);
         return ResponseEntity.ok(createdRating);
     }

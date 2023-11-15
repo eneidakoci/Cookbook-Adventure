@@ -8,6 +8,7 @@ import com.cookbook.domain.entity.CommentEntity;
 import com.cookbook.domain.entity.MemberEntity;
 import com.cookbook.domain.entity.RatingEntity;
 import com.cookbook.domain.entity.RecipeEntity;
+import com.cookbook.domain.exception.ResourceNotFoundException;
 import com.cookbook.domain.mapper.impl.CommentMapperImpl;
 import com.cookbook.domain.mapper.impl.MemberMapperImpl;
 import com.cookbook.domain.mapper.impl.RatingMapperImpl;
@@ -41,8 +42,11 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     @Override
-    public RecipeDTO findRecipeById(Integer id) {
+    public RecipeDTO findRecipeById(Integer id) throws ResourceNotFoundException {
         RecipeEntity recipeEntity = recipeRepository.findRecipeById(id);
+        if(recipeEntity == null){
+            throw new ResourceNotFoundException("Recipe does not exist.");
+        }
         return RecipeMapperImpl.recipeEntityToDto(recipeEntity);
     }
 

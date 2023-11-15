@@ -48,6 +48,8 @@ public class RecipeRepositoryImpl implements RecipeRepository {
     @Override
     public RecipeEntity createRecipe(RecipeEntity recipe) {
         entityManager.persist(recipe);
+        recipe.setCreatedDate(LocalDateTime.now());
+        recipe.setLastModified(LocalDateTime.now());
         return recipe;
     }
     @Transactional

@@ -42,6 +42,8 @@ public class RatingRepositoryImpl implements RatingRepository {
     @Override
     public RatingEntity createRating(RatingEntity rating) {
         entityManager.persist(rating);
+        rating.setCreatedDate(LocalDateTime.now());
+        rating.setLastModified(LocalDateTime.now());
         return rating;
     }
     @Transactional

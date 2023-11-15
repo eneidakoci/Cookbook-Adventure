@@ -38,6 +38,8 @@ public class CommentRepositoryImpl implements CommentRepository {
     @Override
     public CommentEntity createComment(CommentEntity comment) {
         entityManager.persist(comment);
+        comment.setCreatedDate(LocalDateTime.now());
+        comment.setLastModified(LocalDateTime.now());
         return comment;
     }
     @Transactional
