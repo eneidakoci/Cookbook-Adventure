@@ -1,17 +1,24 @@
+
 package com.cookbook.controller;
 
 import com.cookbook.aspect.MeasureTime;
+import com.cookbook.configuration.AdminAccess;
+import com.cookbook.configuration.UserAndAdminAccess;
 import com.cookbook.domain.dto.CategoryDTO;
 import com.cookbook.domain.dto.CategoryRequest;
 import com.cookbook.domain.dto.RecipeDTO;
 import com.cookbook.domain.exception.GenericException;
+import com.cookbook.domain.exception.ResourceNotFoundException;
+import com.cookbook.filter.Filter;
 import com.cookbook.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/api/categories")
@@ -20,13 +27,30 @@ public class CategoryController {
     @Autowired
     private CategoryService categoryService;
 
+    @UserAndAdminAccess
     @MeasureTime
     @GetMapping
-    public ResponseEntity<List<CategoryDTO>> findAllCategories(@RequestParam Integer pageNumber, @RequestParam Integer pageSize) {
-        List<CategoryDTO> categories = categoryService.findAllCategories(pageNumber, pageSize);
+    public ResponseEntity<List<CategoryDTO>> findAllCategories(@RequestParam(required = false) Integer pageNumber,
+                                                               @RequestParam(required = false) Integer pageSize,
+                                                               @RequestParam(required = false) String sort,
+                                                               @RequestParam(required = false) String name) {
+        Filter nameFilter = new Filter("name",name,"LIKE", null, pageNumber, pageSize);
+        if(sort != null){
+            String[] sortValue = sort.split(":");
+            if(Objects.equals(sortValue[0], "name")){
+                nameFilter.setSort(sortValue[1]);
+            }else{
+                throw new RuntimeException("Invalid sort field.");
+            }
+        }
+        List<CategoryDTO> categories = categoryService.findAllCategories(nameFilter);
+        if(categories == null){
+            throw new ResourceNotFoundException("Categories not found.");
+        }
         return ResponseEntity.ok(categories);
     }
 
+    @UserAndAdminAccess
     @GetMapping("/{categoryId}")
     public ResponseEntity<CategoryDTO> findCategoryById(@PathVariable Integer categoryId) {
         CategoryDTO category = categoryService.findCategoryById(categoryId);
@@ -37,6 +61,7 @@ public class CategoryController {
         }
     }
 
+    @AdminAccess
     @PostMapping
     public ResponseEntity<CategoryDTO> createCategory(@RequestBody CategoryRequest categoryRequest) {
         if(categoryRequest.getName() == null || categoryRequest.getName().isEmpty()){
@@ -51,6 +76,7 @@ public class CategoryController {
         }
     }
 
+    @AdminAccess
     @PutMapping("/{categoryId}")
     public ResponseEntity<CategoryDTO> updateCategory(@PathVariable Integer categoryId,
                                                       @RequestBody CategoryDTO categoryDTO) {
@@ -62,6 +88,7 @@ public class CategoryController {
         }
     }
 
+    @AdminAccess
     @DeleteMapping("/{categoryId}")
     public ResponseEntity<CategoryDTO> deleteCategory(@PathVariable Integer categoryId) {
         CategoryDTO deletedCategory = categoryService.deleteCategory(categoryId);
@@ -72,21 +99,18 @@ public class CategoryController {
         }
     }
 
+    @AdminAccess
     @GetMapping("/{categoryId}/recipes")
     public ResponseEntity<List<RecipeDTO>> findRecipesByCategoryId(@PathVariable Integer categoryId) {
         List<RecipeDTO> recipes = categoryService.findRecipesByCategoryId(categoryId);
         return ResponseEntity.ok(recipes);
     }
 
+    @UserAndAdminAccess
     @GetMapping("/recipes")
     public ResponseEntity<List<RecipeDTO>> findRecipesByCategoryName(@RequestParam String categoryName) {
         List<RecipeDTO> recipes = categoryService.findRecipesByCategoryName(categoryName);
         return ResponseEntity.ok(recipes);
-    }
-
-    @GetMapping("/error")
-    public ResponseEntity<String> handleError() {
-        return ResponseEntity.ok().body("Error happened");
     }
 
 }

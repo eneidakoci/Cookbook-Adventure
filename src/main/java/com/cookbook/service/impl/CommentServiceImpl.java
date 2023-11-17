@@ -16,6 +16,7 @@ import com.cookbook.domain.mapper.impl.CategoryMapperImpl;
 import com.cookbook.domain.mapper.impl.CommentMapperImpl;
 import com.cookbook.domain.mapper.impl.MemberMapperImpl;
 import com.cookbook.domain.mapper.impl.RecipeMapperImpl;
+import com.cookbook.filter.Filter;
 import com.cookbook.repository.CommentRepository;
 import com.cookbook.service.CommentService;
 import jakarta.persistence.EntityNotFoundException;
@@ -32,8 +33,8 @@ public class CommentServiceImpl implements CommentService {
     private CommentRepository commentRepository;
 
     @Override
-    public List<CommentDTO> findAllComments(@RequestParam Integer pageNumber, @RequestParam Integer pageSize) {
-        List<CommentEntity> comments = commentRepository.findAllComments(pageNumber, pageSize);
+    public List<CommentDTO> findAllComments(Filter...filters) {
+        List<CommentEntity> comments = commentRepository.findAllComments(filters);
         return comments.stream()
                 .map(CommentMapperImpl::commentEntityToDto)
                 .toList();

@@ -7,6 +7,7 @@ import com.cookbook.domain.entity.RatingEntity;
 import com.cookbook.domain.entity.RecipeEntity;
 import com.cookbook.domain.exception.ResourceNotFoundException;
 import com.cookbook.domain.mapper.impl.*;
+import com.cookbook.filter.Filter;
 import com.cookbook.repository.CommentRepository;
 import com.cookbook.repository.MemberRepository;
 import com.cookbook.repository.RatingRepository;
@@ -33,8 +34,8 @@ public class MemberServiceImpl implements MemberService {
     private RatingRepository ratingRepository;
 
     @Override
-    public List<MemberDTO> findAllMembers(@RequestParam Integer pageNumber, @RequestParam Integer pageSize) {
-        List<MemberEntity> members = memberRepository.findAllMembers(pageNumber, pageSize);
+    public List<MemberDTO> findAllMembers(Filter...filters) {
+        List<MemberEntity> members = memberRepository.findAllMembers(filters);
         return members.stream()
                 .map(MemberMapperImpl::memberEntityToDto)
                 .toList();

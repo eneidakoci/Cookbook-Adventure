@@ -1,3 +1,4 @@
+
 package com.cookbook.service.impl;
 
 import com.cookbook.domain.dto.CategoryDTO;
@@ -8,6 +9,7 @@ import com.cookbook.domain.entity.RecipeEntity;
 import com.cookbook.domain.exception.ResourceNotFoundException;
 import com.cookbook.domain.mapper.impl.CategoryMapperImpl;
 import com.cookbook.domain.mapper.impl.RecipeMapperImpl;
+import com.cookbook.filter.Filter;
 import com.cookbook.repository.CategoryRepository;
 import com.cookbook.service.CategoryService;
 import jakarta.persistence.EntityNotFoundException;
@@ -25,8 +27,8 @@ public class CategoryServiceImpl implements CategoryService {
     private CategoryRepository categoryRepository;
 
     @Override
-    public List<CategoryDTO> findAllCategories(@RequestParam Integer pageNumber, @RequestParam Integer pageSize) {
-        List<CategoryEntity> categories = categoryRepository.findAllCategories(pageNumber, pageSize);
+    public List<CategoryDTO> findAllCategories(Filter...filters) {
+        List<CategoryEntity> categories = categoryRepository.findAllCategories(filters);
         return categories.stream()
                 .map(CategoryMapperImpl::categoryEntityToDto)
                 .toList();

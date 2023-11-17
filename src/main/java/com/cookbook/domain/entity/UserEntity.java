@@ -1,15 +1,12 @@
 package com.cookbook.domain.entity;
-import com.cookbook.domain.entity.Role;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Collection;
 import java.util.Set;
 
 @Getter
@@ -34,15 +31,8 @@ public class UserEntity implements UserDetails {
             inverseJoinColumns = {@JoinColumn(name = "role_id")}
     )
     private Set<Role> authorities;
-
-//    @OneToOne(mappedBy = "userEntity")
-//    private MemberEntity memberEntity;
-//    @Enumerated(EnumType.STRING)
-//    private Role role;
-
-
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
+    public Set<Role> getAuthorities() {
         return this.authorities;
     }
 

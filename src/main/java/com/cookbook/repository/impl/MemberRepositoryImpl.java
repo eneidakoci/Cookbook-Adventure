@@ -4,8 +4,10 @@ import com.cookbook.domain.entity.CommentEntity;
 import com.cookbook.domain.entity.MemberEntity;
 import com.cookbook.domain.entity.RatingEntity;
 import com.cookbook.domain.entity.RecipeEntity;
+import com.cookbook.filter.Filter;
 import com.cookbook.repository.MemberRepository;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Repository;
@@ -19,17 +21,32 @@ public class MemberRepositoryImpl implements MemberRepository {
     @PersistenceContext
     private EntityManager entityManager;
 
-    private static final String SELECT_ALL_MEMBERS = "SELECT m FROM MemberEntity m";
+    private static final String SELECT_ALL_MEMBERS = "SELECT m FROM MemberEntity m WHERE 1=1 ";
     private static final String SELECT_MEMBER_BY_ID = "SELECT m FROM MemberEntity m WHERE m.memberId = :memberId";
     private static final String SELECT_RECIPES_BY_MEMBER_ID = "SELECT r FROM RecipeEntity r WHERE r.memberEntity.memberId = :memberId";
     private static final String SELECT_COMMENTS_BY_MEMBER_ID = "SELECT c FROM CommentEntity c WHERE c.memberEntity.memberId = :memberId";
     private static final String SELECT_RATINGS_BY_MEMBER_ID = "SELECT r FROM RatingEntity r WHERE r.memberEntity.memberId = :memberId";
 
     @Override
-    public List<MemberEntity> findAllMembers(@RequestParam Integer pageNumber, @RequestParam Integer pageSize) {
-        return entityManager.createQuery(SELECT_ALL_MEMBERS, MemberEntity.class)
-                .setFirstResult((pageNumber - 1) * pageSize)
-                .setMaxResults(pageSize)
+    public List<MemberEntity> findAllMembers(Filter...filters) {
+        String dynamicQuery = SELECT_ALL_MEMBERS;
+
+        if (filters != null) {
+            if (filters[0].getValue() != null) {
+                dynamicQuery += "AND m." + filters[0].getField() + " " +
+                        filters[0].getOperator() + " '%" + filters[0].getValue() + "%' ";
+            }
+            if (filters[0].getSort() != null) {
+                dynamicQuery += "ORDER BY m." + filters[0].getField() + " " + filters[0].getSort();
+            }
+            if (filters[0].getPageSize() != null && filters[0].getPageNumber() != null) {
+                return entityManager.createQuery(dynamicQuery, MemberEntity.class)
+                        .setFirstResult((filters[0].getPageNumber() - 1) * filters[0].getPageSize())
+                        .setMaxResults(filters[0].getPageSize())
+                        .getResultList();
+            }
+        }
+        return entityManager.createQuery(dynamicQuery, MemberEntity.class)
                 .getResultList();
     }
 
@@ -60,8 +77,11 @@ public class MemberRepositoryImpl implements MemberRepository {
         MemberEntity member = entityManager.find(MemberEntity.class, id);
         if (member != null) {
             entityManager.remove(member);
+            member.setDeleted(true);
+            return member;
+        } else {
+            throw new EntityNotFoundException("Member with ID " + id + " not found");
         }
-        return member;
     }
 
     @Override

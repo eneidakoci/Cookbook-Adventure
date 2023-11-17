@@ -3,11 +3,12 @@ package com.cookbook.repository;
 import com.cookbook.domain.entity.MemberEntity;
 import com.cookbook.domain.entity.RatingEntity;
 import com.cookbook.domain.entity.RecipeEntity;
+import com.cookbook.filter.Filter;
 
 import java.util.List;
 
 public interface RatingRepository {
-    List<RatingEntity> findAllRatings(Integer pageNumber, Integer pageSize);
+    List<RatingEntity> findAllRatings(Filter...filters);
     RatingEntity findRatingById(Integer id);
     RatingEntity createRating(RatingEntity rating);
     RatingEntity updateRating(Integer id, RatingEntity rating);

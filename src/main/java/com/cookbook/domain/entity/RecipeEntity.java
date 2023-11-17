@@ -23,7 +23,7 @@ public class RecipeEntity extends BaseEntity{
     @JoinColumn(name = "member_id")
     private MemberEntity memberEntity;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "recipe_category",
             joinColumns = @JoinColumn(name = "recipe_id"),
@@ -42,6 +42,4 @@ public class RecipeEntity extends BaseEntity{
 
     @Column(name = "likes")
     private Integer likes;
-
-
 }

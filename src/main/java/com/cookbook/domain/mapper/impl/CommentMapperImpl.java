@@ -1,12 +1,8 @@
 package com.cookbook.domain.mapper.impl;
 
-import com.cookbook.domain.dto.CategoryRequest;
 import com.cookbook.domain.dto.CommentDTO;
 import com.cookbook.domain.dto.CommentRequest;
-import com.cookbook.domain.entity.CategoryEntity;
 import com.cookbook.domain.entity.CommentEntity;
-import com.cookbook.domain.mapper.CommentMapper;
-import org.springframework.stereotype.Component;
 
 public class CommentMapperImpl{
     public static CommentDTO commentEntityToDto(CommentEntity entity) {

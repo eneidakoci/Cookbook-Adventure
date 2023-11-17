@@ -1,8 +1,12 @@
 package com.cookbook.service.impl;
 
 import com.cookbook.domain.dto.LoginResponseDTO;
+import com.cookbook.domain.dto.UserDTO;
+import com.cookbook.domain.entity.CategoryEntity;
 import com.cookbook.domain.entity.Role;
 import com.cookbook.domain.entity.UserEntity;
+import com.cookbook.domain.mapper.UserMapper;
+import com.cookbook.domain.mapper.impl.CategoryMapperImpl;
 import com.cookbook.repository.RoleRepository;
 import com.cookbook.repository.UserRepository;
 import com.cookbook.service.AuthenticationService;
@@ -34,13 +38,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private TokenService tokenService;
 
     @Override
-    public UserEntity registerUser(String username, String password){
+    public UserDTO registerUser(String username, String password){
         String encodedPassword = passwordEncoder.encode(password);
         Role userRole = roleRepository.findByAuthority("USER").get();
-
         Set<Role> authorities = new HashSet<>();
         authorities.add(userRole);
-        return userRepository.save(new UserEntity(0,username, encodedPassword, authorities));
+        UserEntity user = userRepository.save(new UserEntity(0,username, encodedPassword, authorities));
+        return UserMapper.userEntityToDto(user);
     }
 
     @Override

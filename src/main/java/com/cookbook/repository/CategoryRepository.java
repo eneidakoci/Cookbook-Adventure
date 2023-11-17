@@ -2,13 +2,14 @@ package com.cookbook.repository;
 
 import com.cookbook.domain.entity.CategoryEntity;
 import com.cookbook.domain.entity.RecipeEntity;
+import com.cookbook.filter.Filter;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
 
 public interface CategoryRepository {
-    List<CategoryEntity> findAllCategories(Integer pageNumber, Integer pageSize);
+    List<CategoryEntity> findAllCategories(Filter...filters);
 
     CategoryEntity findCategoryById(Integer id);
 

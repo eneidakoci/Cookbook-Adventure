@@ -1,7 +1,9 @@
 package com.cookbook.repository.impl;
+import com.cookbook.domain.entity.CategoryEntity;
 import com.cookbook.domain.entity.CommentEntity;
 import com.cookbook.domain.entity.MemberEntity;
 import com.cookbook.domain.entity.RecipeEntity;
+import com.cookbook.filter.Filter;
 import com.cookbook.repository.CommentRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
@@ -18,14 +20,30 @@ public class CommentRepositoryImpl implements CommentRepository {
     @PersistenceContext
     private EntityManager entityManager;
 
-    private static final String SELECT_ALL_COMMENTS = "SELECT c FROM CommentEntity c";
+    private static final String SELECT_ALL_COMMENTS = "SELECT c FROM CommentEntity c WHERE 1=1 ";
     private static final String SELECT_COMMENTS_BY_MEMBER = "SELECT c FROM CommentEntity c WHERE c.memberEntity = :memberEntity";
     private static final String SELECT_COMMENTS_BY_RECIPE ="SELECT c FROM CommentEntity c WHERE c.recipeEntity.recipeId = :recipeId";
     @Override
-    public List<CommentEntity> findAllComments(@RequestParam Integer pageNumber, @RequestParam Integer pageSize) {
-        return entityManager.createQuery(SELECT_ALL_COMMENTS, CommentEntity.class)
-                .setFirstResult((pageNumber - 1) * pageSize)
-                .setMaxResults(pageSize)
+    public List<CommentEntity> findAllComments(Filter...filters) {
+        String dynamicQuery = SELECT_ALL_COMMENTS;
+
+        if (filters != null) {
+            if (filters[0].getValue() != null) {
+                dynamicQuery += "AND c." + filters[0].getField() + " " +
+                        filters[0].getOperator() + " '%" + filters[0].getValue() + "%' ";
+            }
+            if (filters[0].getSort() != null) {
+                dynamicQuery += "ORDER BY c." + filters[0].getField() + " " + filters[0].getSort();
+            }
+            if (filters[0].getPageSize() != null && filters[0].getPageNumber() != null) {
+                return entityManager.createQuery(dynamicQuery, CommentEntity.class)
+                        .setFirstResult((filters[0].getPageNumber() - 1) * filters[0].getPageSize())
+                        .setMaxResults(filters[0].getPageSize())
+                        .getResultList();
+            }
+        }
+
+        return entityManager.createQuery(dynamicQuery, CommentEntity.class)
                 .getResultList();
     }
 
@@ -57,27 +75,9 @@ public class CommentRepositoryImpl implements CommentRepository {
             entityManager.remove(comment);
             comment.setDeleted(true);
             return comment;
-        }else {
+        } else {
             throw new EntityNotFoundException("Comment with ID " + id + " not found");
         }
-    }
-
-    @Override
-    public MemberEntity findMemberByCommentId(Integer commentId) {
-        CommentEntity comment = entityManager.find(CommentEntity.class, commentId);
-        if (comment != null) {
-            return comment.getMemberEntity();
-        }
-        return null;
-    }
-
-    @Override
-    public RecipeEntity findRecipeByCommentId(Integer commentId) {
-        CommentEntity comment = entityManager.find(CommentEntity.class, commentId);
-        if (comment != null) {
-            return comment.getRecipeEntity();
-        }
-        return null;
     }
 
     @Override

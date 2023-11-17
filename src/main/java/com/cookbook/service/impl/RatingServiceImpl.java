@@ -13,6 +13,7 @@ import com.cookbook.domain.mapper.RatingMapper;
 import com.cookbook.domain.mapper.impl.MemberMapperImpl;
 import com.cookbook.domain.mapper.impl.RatingMapperImpl;
 import com.cookbook.domain.mapper.impl.RecipeMapperImpl;
+import com.cookbook.filter.Filter;
 import com.cookbook.repository.MemberRepository;
 import com.cookbook.repository.RatingRepository;
 import com.cookbook.repository.RecipeRepository;
@@ -31,8 +32,8 @@ public class RatingServiceImpl implements RatingService {
     private RatingRepository ratingRepository;
 
     @Override
-    public List<RatingDTO> findAllRatings(@RequestParam Integer pageNumber, @RequestParam Integer pageSize) {
-        List<RatingEntity> ratings = ratingRepository.findAllRatings(pageNumber, pageSize);
+    public List<RatingDTO> findAllRatings(Filter...filters) {
+        List<RatingEntity> ratings = ratingRepository.findAllRatings(filters);
         return ratings.stream().map(RatingMapperImpl::ratingEntityToDto).toList();
     }
 

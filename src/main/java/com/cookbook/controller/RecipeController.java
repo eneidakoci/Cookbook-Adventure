@@ -1,18 +1,24 @@
 package com.cookbook.controller;
 
 import com.cookbook.aspect.MeasureTime;
+import com.cookbook.configuration.AdminAccess;
+import com.cookbook.configuration.UserAndAdminAccess;
 import com.cookbook.domain.dto.CommentDTO;
 import com.cookbook.domain.dto.RatingDTO;
 import com.cookbook.domain.dto.RecipeDTO;
 import com.cookbook.domain.dto.RecipeRequest;
 import com.cookbook.domain.exception.GenericException;
+import com.cookbook.domain.exception.ResourceNotFoundException;
+import com.cookbook.filter.Filter;
 import com.cookbook.service.RecipeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/api/recipes")
@@ -20,13 +26,31 @@ public class RecipeController {
 
     @Autowired
     private RecipeService recipeService;
+
+    @UserAndAdminAccess
     @MeasureTime
     @GetMapping
-    public ResponseEntity<List<RecipeDTO>> findAllRecipes(@RequestParam Integer pageNumber, @RequestParam Integer pageSize) {
-        List<RecipeDTO> recipes = recipeService.findAllRecipes(pageNumber, pageSize);
-        return ResponseEntity.ok(recipes);
+    public ResponseEntity<List<RecipeDTO>> findAllRecipes(@RequestParam Integer pageNumber,
+                                                          @RequestParam Integer pageSize,
+                                                          @RequestParam(required = false) String sort,
+                                                          @RequestParam(required = false) String likes) {
+        Filter likesFilter = new Filter("likes",likes,"LIKE", null, pageNumber, pageSize);
+        if(sort != null){
+            String[] sortValue = sort.split(":");
+            if(Objects.equals(sortValue[0], "likes")){
+                likesFilter.setSort(sortValue[1]);
+            }else{
+                throw new RuntimeException("Invalid sort field.");
+            }
+        }
+        List<RecipeDTO> recipeDTOS = recipeService.findAllRecipes(likesFilter);
+        if(recipeDTOS == null){
+            throw new ResourceNotFoundException("recipes not found.");
+        }
+        return ResponseEntity.ok(recipeDTOS);
     }
 
+    @UserAndAdminAccess
     @GetMapping("/{recipeId}")
     public ResponseEntity<RecipeDTO> findRecipeById(@PathVariable Integer recipeId) {
         RecipeDTO recipe = recipeService.findRecipeById(recipeId);
@@ -37,6 +61,7 @@ public class RecipeController {
         }
     }
 
+    @UserAndAdminAccess
     @PostMapping
     public ResponseEntity<RecipeDTO> createRecipe(@RequestBody RecipeRequest recipeRequest) {
         if(recipeRequest.getRecipeName() == null || recipeRequest.getRecipeName().isEmpty()){
@@ -51,6 +76,7 @@ public class RecipeController {
         }
     }
 
+    @UserAndAdminAccess
     @PutMapping("/{recipeId}")
     public ResponseEntity<RecipeDTO> updateRecipe(
             @PathVariable Integer recipeId,
@@ -63,6 +89,7 @@ public class RecipeController {
         }
     }
 
+    @AdminAccess
     @DeleteMapping("/{recipeId}")
     public ResponseEntity<RecipeDTO> deleteRecipe(@PathVariable Integer recipeId) {
         RecipeDTO deletedRecipe = recipeService.deleteRecipe(recipeId);
@@ -73,46 +100,31 @@ public class RecipeController {
         }
     }
 
+    @UserAndAdminAccess
     @GetMapping("/{recipeId}/comments")
     public ResponseEntity<List<CommentDTO>> findCommentsByRecipeId(@PathVariable Integer recipeId) {
         List<CommentDTO> comments = recipeService.findCommentsByRecipeId(recipeId);
         return ResponseEntity.ok(comments);
     }
 
+    @UserAndAdminAccess
     @GetMapping("/{recipeId}/ratings")
     public ResponseEntity<List<RatingDTO>> findRatingsByRecipeId(@PathVariable Integer recipeId) {
         List<RatingDTO> ratings = recipeService.findRatingsByRecipeId(recipeId);
         return ResponseEntity.ok(ratings);
     }
 
+    @UserAndAdminAccess
     @GetMapping("/popular")
     public ResponseEntity<List<RecipeDTO>> findPopularRecipes() {
         List<RecipeDTO> popularRecipes = recipeService.findPopularRecipes();
         return ResponseEntity.ok(popularRecipes);
     }
 
+    @UserAndAdminAccess
     @GetMapping("/newest")
     public ResponseEntity<List<RecipeDTO>> findNewestRecipes() {
         List<RecipeDTO> newestRecipes = recipeService.findNewestRecipes();
         return ResponseEntity.ok(newestRecipes);
     }
-
-//    @GetMapping("/countByCategory")
-//    public ResponseEntity<Integer> countRecipesByCategory(@RequestParam Integer categoryId) {
-//        if (categoryId == null || categoryId < 1) {
-//            return ResponseEntity.badRequest().build();
-//        }
-//        Integer count = recipeService.countRecipesByCategory(categoryId);
-//        return ResponseEntity.ok(count);
-//    }
-//
-//    @GetMapping("/countByMember")
-//    public ResponseEntity<Integer> countRecipesByMember(@RequestParam Integer memberId) {
-//        if (memberId == null || memberId < 1) {
-//            return ResponseEntity.badRequest().build();
-//        }
-//        Integer count = recipeService.countRecipesByMember(memberId);
-//        return ResponseEntity.ok(count);
-//    }
-
 }
