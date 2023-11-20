@@ -13,10 +13,8 @@ public class MemberRequest extends BaseDomainRequest{
     private String name;
     private String lastName;
     private String email;
-   // private ProfileEntity profileEntity;
 
     public MemberRequest(String username){
         this.name = name;
-       // this.profileEntity = profileEntity;
     }
 }

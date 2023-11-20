@@ -17,7 +17,7 @@ import java.util.Objects;
 @NoArgsConstructor
 public class CategoryDTO extends BaseDomainDTO{
     private Integer categoryId;
-    private List<RecipeEntity> recipeEntities = new ArrayList<>();
+    private List<RecipeEntity> recipeEntities;
     private String name;
     public CategoryDTO(LocalDateTime createdDate, LocalDateTime lastModified, boolean deleted, Integer categoryId, List<RecipeEntity> recipeEntities, String name) {
         super(createdDate, lastModified, deleted);

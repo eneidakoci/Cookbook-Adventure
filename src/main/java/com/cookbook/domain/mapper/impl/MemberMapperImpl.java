@@ -15,7 +15,6 @@ public class MemberMapperImpl{
         memberDTO.setCreatedDate( entity.getCreatedDate() );
         memberDTO.setLastModified( entity.getLastModified() );
         memberDTO.setDeleted( entity.isDeleted() );
-      //  memberDTO.setProfile( entity.getProfile() );
         memberDTO.setMemberId( entity.getMemberId() );
         memberDTO.setName( entity.getName() );
         memberDTO.setLastName( entity.getLastName() );
@@ -40,7 +39,6 @@ public class MemberMapperImpl{
         memberEntity.setLastName( dto.getLastName() );
         memberEntity.setEmail( dto.getEmail() );
         memberEntity.setMemberId(dto.getMemberId());
-       // memberEntity.setProfile( dto.getProfile() );
 
         return memberEntity;
     }
@@ -58,7 +56,6 @@ public class MemberMapperImpl{
         memberEntity.setName( memberRequest.getName() );
         memberEntity.setLastName( memberRequest.getLastName() );
         memberEntity.setEmail( memberRequest.getEmail() );
-        //memberEntity.setProfile(memberRequest.getProfileEntity());
 
         return memberEntity;
     }

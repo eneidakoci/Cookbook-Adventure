@@ -97,7 +97,7 @@ public class MemberController {
         }
     }
 
-    @AdminAccess
+    @UserAndAdminAccess
     @GetMapping("/{memberId}/recipes")
     public ResponseEntity<List<RecipeDTO>> findRecipesByMemberId(@PathVariable Integer memberId) {
         List<RecipeDTO> recipes = memberService.findRecipesByMemberId(memberId);

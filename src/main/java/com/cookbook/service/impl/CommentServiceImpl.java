@@ -4,15 +4,10 @@ import com.cookbook.domain.dto.CommentDTO;
 import com.cookbook.domain.dto.CommentRequest;
 import com.cookbook.domain.dto.MemberDTO;
 import com.cookbook.domain.dto.RecipeDTO;
-import com.cookbook.domain.entity.CategoryEntity;
 import com.cookbook.domain.entity.CommentEntity;
 import com.cookbook.domain.entity.MemberEntity;
 import com.cookbook.domain.entity.RecipeEntity;
 import com.cookbook.domain.exception.ResourceNotFoundException;
-import com.cookbook.domain.mapper.CommentMapper;
-import com.cookbook.domain.mapper.MemberMapper;
-import com.cookbook.domain.mapper.RecipeMapper;
-import com.cookbook.domain.mapper.impl.CategoryMapperImpl;
 import com.cookbook.domain.mapper.impl.CommentMapperImpl;
 import com.cookbook.domain.mapper.impl.MemberMapperImpl;
 import com.cookbook.domain.mapper.impl.RecipeMapperImpl;
@@ -22,7 +17,6 @@ import com.cookbook.service.CommentService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 

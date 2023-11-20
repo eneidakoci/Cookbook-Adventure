@@ -61,7 +61,7 @@ public class RecipeController {
         }
     }
 
-    @UserAndAdminAccess
+    @AdminAccess
     @PostMapping
     public ResponseEntity<RecipeDTO> createRecipe(@RequestBody RecipeRequest recipeRequest) {
         if(recipeRequest.getRecipeName() == null || recipeRequest.getRecipeName().isEmpty()){
@@ -76,7 +76,7 @@ public class RecipeController {
         }
     }
 
-    @UserAndAdminAccess
+    @AdminAccess
     @PutMapping("/{recipeId}")
     public ResponseEntity<RecipeDTO> updateRecipe(
             @PathVariable Integer recipeId,

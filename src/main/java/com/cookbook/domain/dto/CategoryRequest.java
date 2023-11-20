@@ -16,7 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 public class CategoryRequest extends BaseDomainRequest{
     private String name;
-    private List<RecipeEntity> recipeEntities = new ArrayList<>();
+    private List<RecipeEntity> recipeEntities;
 
     public CategoryRequest(String name) {
         this.name = name;

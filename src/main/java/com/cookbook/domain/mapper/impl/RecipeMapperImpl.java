@@ -35,6 +35,7 @@ public class RecipeMapperImpl {
         recipeDTO.setMemberEntity(entity.getMemberEntity());
         recipeDTO.setDescription( entity.getDescription() );
         recipeDTO.setLikes( entity.getLikes() );
+        recipeDTO.setCategories(entity.getCategories());
 
         return recipeDTO;
     }
@@ -59,6 +60,7 @@ public class RecipeMapperImpl {
         recipeEntity.setIngredients( dto.getIngredients() );
         recipeEntity.setDescription( dto.getDescription() );
         recipeEntity.setLikes( dto.getLikes() );
+        recipeEntity.setCategories(dto.getCategories());
 
         return recipeEntity;
     }
@@ -77,6 +79,7 @@ public class RecipeMapperImpl {
         recipeEntity.setIngredients( request.getIngredients() );
         recipeEntity.setDescription( request.getDescription() );
         recipeEntity.setLikes( request.getLikes() );
+        recipeEntity.setCategories(request.getCategoryEntity());
 
         return recipeEntity;
     }

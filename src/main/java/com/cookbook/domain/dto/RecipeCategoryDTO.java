@@ -1,5 +1,7 @@
 package com.cookbook.domain.dto;
 
+import com.cookbook.domain.entity.CategoryEntity;
+import com.cookbook.domain.entity.RecipeEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,25 +14,13 @@ import java.util.Objects;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RecipeCategoryDTO extends BaseDomainDTO{
-        private RecipeDTO recipeDTO;
-        private CategoryDTO categoryDTO;
+        private RecipeEntity recipeEntity;
+        private CategoryEntity categoryEntity;
 
-    public RecipeCategoryDTO(LocalDateTime createdDate, LocalDateTime lastModified, boolean deleted, RecipeDTO recipeDTO, CategoryDTO categoryDTO) {
+    public RecipeCategoryDTO(LocalDateTime createdDate, LocalDateTime lastModified, boolean deleted, RecipeEntity recipeEntity, CategoryEntity categoryEntity) {
         super(createdDate, lastModified, deleted);
-        this.recipeDTO = recipeDTO;
-        this.categoryDTO = categoryDTO;
+        this.recipeEntity = recipeEntity;
+        this.categoryEntity = categoryEntity;
     }
 
-    @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            RecipeCategoryDTO that = (RecipeCategoryDTO) o;
-            return Objects.equals(recipeDTO, that.recipeDTO) && Objects.equals(categoryDTO, that.categoryDTO);
-        }
-    
-        @Override
-        public int hashCode() {
-            return Objects.hash(recipeDTO, categoryDTO);
-        }
     }

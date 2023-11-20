@@ -61,6 +61,7 @@ public class CategoryController {
         }
     }
 
+
     @AdminAccess
     @PostMapping
     public ResponseEntity<CategoryDTO> createCategory(@RequestBody CategoryRequest categoryRequest) {
@@ -76,6 +77,7 @@ public class CategoryController {
         }
     }
 
+
     @AdminAccess
     @PutMapping("/{categoryId}")
     public ResponseEntity<CategoryDTO> updateCategory(@PathVariable Integer categoryId,
@@ -87,6 +89,7 @@ public class CategoryController {
             return ResponseEntity.notFound().build();
         }
     }
+
 
     @AdminAccess
     @DeleteMapping("/{categoryId}")

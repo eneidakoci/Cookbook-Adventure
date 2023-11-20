@@ -18,7 +18,6 @@ public class MemberDTO extends BaseDomainDTO{
     private String name;
     private String lastName;
     private String email;
-    //private ProfileEntity profile;
 
     public MemberDTO(LocalDateTime createdDate, LocalDateTime lastModified, boolean deleted, Integer memberId, String name, String lastName, String email /*ProfileEntity profile*/) {
         super(createdDate, lastModified, deleted);
@@ -26,7 +25,6 @@ public class MemberDTO extends BaseDomainDTO{
         this.name = name;
         this.lastName = lastName;
         this.email = email;
-        //this.profile = profile;
     }
 
     @Override

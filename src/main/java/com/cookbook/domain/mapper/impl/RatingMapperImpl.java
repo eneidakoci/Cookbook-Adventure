@@ -57,7 +57,8 @@ public class RatingMapperImpl {
         ratingEntity.setCreatedDate( ratingRequest.getCreatedDate() );
         ratingEntity.setLastModified( ratingRequest.getLastModified() );
         ratingEntity.setDeleted( ratingRequest.isDeleted() );
-        //ratingEntity.setMemberEntity( ratingRequest.getMemberEntity() );
+        ratingEntity.setMemberEntity( ratingRequest.getMemberEntity() );
+        ratingEntity.setRecipeEntity(ratingRequest.getRecipeEntity());
         if ( ratingRequest.getRate() != null ) {
             ratingEntity.setRate( ratingRequest.getRate() );
         }
