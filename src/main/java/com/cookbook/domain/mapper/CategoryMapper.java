@@ -24,9 +24,8 @@ public class CategoryMapper {
         categoryDTO.setCategoryId(entity.getCategoryId());
         List<RecipeEntity> list = entity.getRecipeEntities();
         categoryDTO.setName(entity.getName());
-        if (list != null) {
-            categoryDTO.setRecipeEntities(new ArrayList<RecipeEntity>(list));
-        }
+        categoryDTO.setRecipeEntities(entity.getRecipeEntities());
+
         return categoryDTO;
     }
 
@@ -43,10 +42,7 @@ public class CategoryMapper {
         categoryEntity.setDeleted(dto.isDeleted());
         categoryEntity.setCategoryId(dto.getCategoryId());
         categoryEntity.setName(dto.getName());
-        List<RecipeEntity> list = dto.getRecipeEntities();
-        if (list != null) {
-            categoryEntity.setRecipeEntities(new ArrayList<RecipeEntity>(list));
-        }
+        categoryEntity.setRecipeEntities(dto.getRecipeEntities());
 
         return categoryEntity;
     }
@@ -63,10 +59,8 @@ public class CategoryMapper {
         categoryEntity.setLastModified(categoryRequest.getLastModified());
         categoryEntity.setDeleted(categoryRequest.isDeleted());
         categoryEntity.setName(categoryRequest.getName());
-        List<RecipeEntity> list = categoryRequest.getRecipeEntities();
-        if (list != null) {
-            categoryEntity.setRecipeEntities(new ArrayList<RecipeEntity>(list));
-        }
+
+        categoryEntity.setRecipeEntities(categoryRequest.getRecipeEntities());
 
         return categoryEntity;
     }

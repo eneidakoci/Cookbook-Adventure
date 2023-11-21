@@ -22,9 +22,6 @@ public class RecipeMapper {
         recipeDTO.setDeleted( entity.isDeleted() );
         recipeDTO.setRecipeId( entity.getRecipeId() );
         Set<CategoryEntity> set = entity.getCategories();
-        if ( set != null ) {
-            recipeDTO.setCategories( new LinkedHashSet<CategoryEntity>( set ) );
-        }
         recipeDTO.setRecipeName( entity.getRecipeName() );
         recipeDTO.setIngredients( entity.getIngredients() );
         recipeDTO.setMemberEntity(entity.getMemberEntity());
@@ -48,9 +45,6 @@ public class RecipeMapper {
         recipeEntity.setMemberEntity(dto.getMemberEntity());
         recipeEntity.setRecipeId( dto.getRecipeId() );
         Set<CategoryEntity> set = dto.getCategories();
-        if ( set != null ) {
-            recipeEntity.setCategories( new LinkedHashSet<CategoryEntity>( set ) );
-        }
         recipeEntity.setRecipeName( dto.getRecipeName() );
         recipeEntity.setIngredients( dto.getIngredients() );
         recipeEntity.setDescription( dto.getDescription() );

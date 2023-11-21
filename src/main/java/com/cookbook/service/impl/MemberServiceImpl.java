@@ -67,7 +67,6 @@ public class MemberServiceImpl implements MemberService {
             MemberEntity updatedMemberEntity = MemberMapper.memberRequestToEntity(member);
             updatedMemberEntity.setMemberId(id);
             MemberEntity savedMemberEntity = memberRepository.updateMember(id, updatedMemberEntity);
-//            savedMemberEntity.setProfile(member.getProfileEntity());
             return MemberMapper.memberEntityToDto(savedMemberEntity);
         }
         return null;

@@ -1,6 +1,5 @@
 package com.cookbook.domain.dto;
 
-//import com.cookbook.domain.entity.ProfileEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,7 +18,7 @@ public class MemberDTO extends BaseDomainDTO{
     private String lastName;
     private String email;
 
-    public MemberDTO(LocalDateTime createdDate, LocalDateTime lastModified, boolean deleted, Integer memberId, String name, String lastName, String email /*ProfileEntity profile*/) {
+    public MemberDTO(LocalDateTime createdDate, LocalDateTime lastModified, boolean deleted, Integer memberId, String name, String lastName, String email) {
         super(createdDate, lastModified, deleted);
         this.memberId = memberId;
         this.name = name;

@@ -14,7 +14,4 @@ public class MemberRequest extends BaseDomainRequest{
     private String lastName;
     private String email;
 
-    public MemberRequest(String username){
-        this.name = name;
-    }
 }

@@ -51,7 +51,6 @@ public class SecurityConfiguration {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers("/auth/**").permitAll();
-                    auth.requestMatchers("/api/members/**").hasRole("ADMIN");
                     auth.anyRequest().authenticated();
                 });
         http.oauth2ResourceServer()
