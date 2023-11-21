@@ -26,4 +26,7 @@ public class MemberEntity extends BaseEntity{
     @Column(unique = true)
     private String email;
 
+    @OneToOne
+    @JoinColumn(name="user_id", referencedColumnName = "userId")
+    private UserEntity userEntity;
 }

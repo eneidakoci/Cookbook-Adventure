@@ -4,22 +4,13 @@ import com.cookbook.domain.dto.MemberDTO;
 import com.cookbook.domain.dto.MemberRequest;
 import com.cookbook.domain.dto.RatingDTO;
 import com.cookbook.domain.dto.RecipeDTO;
-import com.cookbook.domain.entity.CommentEntity;
 import com.cookbook.domain.entity.MemberEntity;
-import com.cookbook.domain.entity.RatingEntity;
-import com.cookbook.domain.entity.RecipeEntity;
-import com.cookbook.domain.exception.ResourceNotFoundException;
-import com.cookbook.domain.mapper.impl.CommentMapperImpl;
-import com.cookbook.domain.mapper.impl.MemberMapperImpl;
-import com.cookbook.domain.mapper.impl.RatingMapperImpl;
-import com.cookbook.domain.mapper.impl.RecipeMapperImpl;
-import com.cookbook.filter.Filter;
+import com.cookbook.domain.entity.UserEntity;
 import com.cookbook.repository.CommentRepository;
 import com.cookbook.repository.MemberRepository;
 import com.cookbook.repository.RatingRepository;
 import com.cookbook.repository.RecipeRepository;
 import com.cookbook.service.impl.MemberServiceImpl;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -47,6 +38,9 @@ class MemberServiceTest {
 
     @Mock
     private RatingRepository ratingRepository;
+
+    @Mock
+    private UserService userService;
 
     @InjectMocks
     private MemberService memberService = Mockito.spy(new MemberServiceImpl());
@@ -79,6 +73,9 @@ class MemberServiceTest {
     void testCreateMember() {
         MemberRequest memberRequest = new MemberRequest();
         memberRequest.setName("Test Member");
+
+        UserEntity user = new UserEntity();
+        when(userService.loadUserByUsername(anyString())).thenReturn(user);
 
         when(memberRepository.createMember(any(MemberEntity.class))).thenReturn(new MemberEntity());
 

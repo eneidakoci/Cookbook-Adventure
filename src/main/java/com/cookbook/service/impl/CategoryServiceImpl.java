@@ -7,15 +7,14 @@ import com.cookbook.domain.dto.RecipeDTO;
 import com.cookbook.domain.entity.CategoryEntity;
 import com.cookbook.domain.entity.RecipeEntity;
 import com.cookbook.domain.exception.ResourceNotFoundException;
-import com.cookbook.domain.mapper.impl.CategoryMapperImpl;
-import com.cookbook.domain.mapper.impl.RecipeMapperImpl;
+import com.cookbook.domain.mapper.CategoryMapper;
+import com.cookbook.domain.mapper.RecipeMapper;
 import com.cookbook.filter.Filter;
 import com.cookbook.repository.CategoryRepository;
 import com.cookbook.service.CategoryService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.Optional;
@@ -30,7 +29,7 @@ public class CategoryServiceImpl implements CategoryService {
     public List<CategoryDTO> findAllCategories(Filter...filters) {
         List<CategoryEntity> categories = categoryRepository.findAllCategories(filters);
         return categories.stream()
-                .map(CategoryMapperImpl::categoryEntityToDto)
+                .map(CategoryMapper::categoryEntityToDto)
                 .toList();
     }
 
@@ -40,14 +39,14 @@ public class CategoryServiceImpl implements CategoryService {
         if (category == null) {
             throw new ResourceNotFoundException("Category does not exist.");
         }
-        return CategoryMapperImpl.categoryEntityToDto(categoryRepository.findCategoryById(id));
+        return CategoryMapper.categoryEntityToDto(categoryRepository.findCategoryById(id));
     }
 
     @Override
     public CategoryDTO createCategory(CategoryRequest categoryRequest) {
-        CategoryEntity category = CategoryMapperImpl.categoryRequestToEntity(categoryRequest);
+        CategoryEntity category = CategoryMapper.categoryRequestToEntity(categoryRequest);
         category = categoryRepository.createCategory(category);
-        return CategoryMapperImpl.categoryEntityToDto(category);
+        return CategoryMapper.categoryEntityToDto(category);
     }
 
     @Override
@@ -57,7 +56,7 @@ public class CategoryServiceImpl implements CategoryService {
             CategoryEntity existingCategory = categoryOptional.get();
             existingCategory.setName(categoryDTO.getName());
             CategoryEntity updatedCategory = categoryRepository.createCategory(existingCategory);
-            return CategoryMapperImpl.categoryEntityToDto(updatedCategory);
+            return CategoryMapper.categoryEntityToDto(updatedCategory);
         } else {
             return null;
         }
@@ -67,7 +66,7 @@ public class CategoryServiceImpl implements CategoryService {
     public CategoryDTO deleteCategory(Integer id) {
         try {
             CategoryEntity deletedCategory = categoryRepository.deleteCategory(id);
-            return CategoryMapperImpl.categoryEntityToDto(deletedCategory);
+            return CategoryMapper.categoryEntityToDto(deletedCategory);
         } catch (EntityNotFoundException e) {
             throw new RuntimeException("Category not found with id: " + id);
         }
@@ -78,7 +77,7 @@ public class CategoryServiceImpl implements CategoryService {
         List<RecipeEntity> recipeEntities = categoryRepository.findRecipesByCategoryId(categoryId);
 
         return recipeEntities.stream()
-                .map(RecipeMapperImpl::recipeEntityToDto)
+                .map(RecipeMapper::recipeEntityToDto)
                 .toList();
     }
 
@@ -88,7 +87,7 @@ public class CategoryServiceImpl implements CategoryService {
         List<RecipeEntity> recipeEntities = categoryRepository.findRecipesByCategoryName(categoryName);
 
         return recipeEntities.stream()
-                .map(RecipeMapperImpl::recipeEntityToDto)
+                .map(RecipeMapper::recipeEntityToDto)
                 .toList();
     }
 

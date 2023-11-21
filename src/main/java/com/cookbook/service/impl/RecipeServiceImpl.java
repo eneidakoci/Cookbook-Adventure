@@ -5,14 +5,12 @@ import com.cookbook.domain.dto.RatingDTO;
 import com.cookbook.domain.dto.RecipeDTO;
 import com.cookbook.domain.dto.RecipeRequest;
 import com.cookbook.domain.entity.CommentEntity;
-import com.cookbook.domain.entity.MemberEntity;
 import com.cookbook.domain.entity.RatingEntity;
 import com.cookbook.domain.entity.RecipeEntity;
 import com.cookbook.domain.exception.ResourceNotFoundException;
-import com.cookbook.domain.mapper.impl.CommentMapperImpl;
-import com.cookbook.domain.mapper.impl.MemberMapperImpl;
-import com.cookbook.domain.mapper.impl.RatingMapperImpl;
-import com.cookbook.domain.mapper.impl.RecipeMapperImpl;
+import com.cookbook.domain.mapper.CommentMapper;
+import com.cookbook.domain.mapper.RatingMapper;
+import com.cookbook.domain.mapper.RecipeMapper;
 import com.cookbook.filter.Filter;
 import com.cookbook.repository.CommentRepository;
 import com.cookbook.repository.RatingRepository;
@@ -21,7 +19,6 @@ import com.cookbook.service.RecipeService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -38,7 +35,7 @@ public class RecipeServiceImpl implements RecipeService {
     public List<RecipeDTO> findAllRecipes(Filter...filters) {
         List<RecipeEntity> recipes = recipeRepository.findAllRecipes(filters);
         return recipes.stream()
-                .map(RecipeMapperImpl::recipeEntityToDto)
+                .map(RecipeMapper::recipeEntityToDto)
                 .toList();
     }
 
@@ -48,14 +45,14 @@ public class RecipeServiceImpl implements RecipeService {
         if(recipeEntity == null){
             throw new ResourceNotFoundException("Recipe does not exist.");
         }
-        return RecipeMapperImpl.recipeEntityToDto(recipeEntity);
+        return RecipeMapper.recipeEntityToDto(recipeEntity);
     }
 
     @Override
     public RecipeDTO createRecipe(RecipeRequest recipeRequest) {
-        RecipeEntity recipeEntity = RecipeMapperImpl.requestDtoToEntity(recipeRequest);
+        RecipeEntity recipeEntity = RecipeMapper.requestDtoToEntity(recipeRequest);
         RecipeEntity savedRecipeEntity = recipeRepository.createRecipe(recipeEntity);
-        return RecipeMapperImpl.recipeEntityToDto(savedRecipeEntity);
+        return RecipeMapper.recipeEntityToDto(savedRecipeEntity);
     }
 
     @Override
@@ -63,10 +60,10 @@ public class RecipeServiceImpl implements RecipeService {
         RecipeEntity existingRecipeEntity = recipeRepository.findRecipeById(id);
 
         if (existingRecipeEntity != null) {
-            RecipeEntity updatedRecipeEntity = RecipeMapperImpl.requestDtoToEntity(recipeRequest);
+            RecipeEntity updatedRecipeEntity = RecipeMapper.requestDtoToEntity(recipeRequest);
             updatedRecipeEntity.setRecipeId(id);
             RecipeEntity savedRecipeEntity = recipeRepository.updateRecipe(id, updatedRecipeEntity);
-            return RecipeMapperImpl.recipeEntityToDto(savedRecipeEntity);
+            return RecipeMapper.recipeEntityToDto(savedRecipeEntity);
         }
        return null;
     }
@@ -75,7 +72,7 @@ public class RecipeServiceImpl implements RecipeService {
     public RecipeDTO deleteRecipe(Integer id) {
         try {
             RecipeEntity deletedRecipeEntity = recipeRepository.deleteRecipe(id);
-            return RecipeMapperImpl.recipeEntityToDto(deletedRecipeEntity);
+            return RecipeMapper.recipeEntityToDto(deletedRecipeEntity);
         } catch (EntityNotFoundException e) {
             throw new RuntimeException("Recipe not found with id: " + id);
         }
@@ -87,7 +84,7 @@ public class RecipeServiceImpl implements RecipeService {
         if (recipeEntity != null) {
             List<CommentEntity> comments = commentRepository.findCommentsByRecipeId(recipeId);
             return comments.stream()
-                    .map(CommentMapperImpl::commentEntityToDto)
+                    .map(CommentMapper::commentEntityToDto)
                     .toList();
         }
         return null;
@@ -97,7 +94,7 @@ public class RecipeServiceImpl implements RecipeService {
     public List<RatingDTO> findRatingsByRecipeId(Integer recipeId) {
         List<RatingEntity> ratings = ratingRepository.findRatingsByRecipeId(recipeId);
         return ratings.stream()
-                .map(RatingMapperImpl::ratingEntityToDto)
+                .map(RatingMapper::ratingEntityToDto)
                 .toList();
     }
 
@@ -105,7 +102,7 @@ public class RecipeServiceImpl implements RecipeService {
     public List<RecipeDTO> findPopularRecipes() {
         List<RecipeEntity> popularRecipes = recipeRepository.findPopularRecipes();
         return popularRecipes.stream()
-                .map(RecipeMapperImpl::recipeEntityToDto)
+                .map(RecipeMapper::recipeEntityToDto)
                 .toList();
     }
 
@@ -113,7 +110,7 @@ public class RecipeServiceImpl implements RecipeService {
     public List<RecipeDTO> findNewestRecipes() {
         List<RecipeEntity> newestRecipes = recipeRepository.findNewestRecipes();
         return newestRecipes.stream()
-                .map(RecipeMapperImpl::recipeEntityToDto)
+                .map(RecipeMapper::recipeEntityToDto)
                 .toList();
     }
 

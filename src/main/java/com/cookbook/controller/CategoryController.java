@@ -102,17 +102,10 @@ public class CategoryController {
         }
     }
 
-    @AdminAccess
+    @UserAndAdminAccess
     @GetMapping("/{categoryId}/recipes")
     public ResponseEntity<List<RecipeDTO>> findRecipesByCategoryId(@PathVariable Integer categoryId) {
         List<RecipeDTO> recipes = categoryService.findRecipesByCategoryId(categoryId);
-        return ResponseEntity.ok(recipes);
-    }
-
-    @UserAndAdminAccess
-    @GetMapping("/recipes")
-    public ResponseEntity<List<RecipeDTO>> findRecipesByCategoryName(@RequestParam String categoryName) {
-        List<RecipeDTO> recipes = categoryService.findRecipesByCategoryName(categoryName);
         return ResponseEntity.ok(recipes);
     }
 

@@ -4,15 +4,14 @@ import com.cookbook.aspect.MeasureTime;
 import com.cookbook.configuration.AdminAccess;
 import com.cookbook.configuration.UserAndAdminAccess;
 import com.cookbook.domain.dto.*;
-import com.cookbook.domain.entity.MemberEntity;
+import com.cookbook.domain.entity.UserEntity;
 import com.cookbook.domain.exception.GenericException;
 import com.cookbook.domain.exception.ResourceNotFoundException;
-import com.cookbook.domain.mapper.impl.MemberMapperImpl;
 import com.cookbook.filter.Filter;
 import com.cookbook.service.MemberService;
+import com.cookbook.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -24,6 +23,7 @@ import java.util.Objects;
 public class MemberController {
     @Autowired
     private MemberService memberService;
+
     @MeasureTime
     @AdminAccess
     @GetMapping

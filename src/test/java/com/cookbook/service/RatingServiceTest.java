@@ -1,15 +1,9 @@
 package com.cookbook.service;
 
-import com.cookbook.domain.dto.MemberDTO;
 import com.cookbook.domain.dto.RatingDTO;
 import com.cookbook.domain.dto.RatingRequest;
-import com.cookbook.domain.dto.RecipeDTO;
 import com.cookbook.domain.entity.RatingEntity;
-import com.cookbook.domain.exception.ResourceNotFoundException;
-import com.cookbook.domain.mapper.impl.RatingMapperImpl;
-import com.cookbook.filter.Filter;
 import com.cookbook.repository.RatingRepository;
-import com.cookbook.service.impl.MemberServiceImpl;
 import com.cookbook.service.impl.RatingServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

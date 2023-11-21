@@ -61,7 +61,7 @@ public class RecipeController {
         }
     }
 
-    @AdminAccess
+    @UserAndAdminAccess
     @PostMapping
     public ResponseEntity<RecipeDTO> createRecipe(@RequestBody RecipeRequest recipeRequest) {
         if(recipeRequest.getRecipeName() == null || recipeRequest.getRecipeName().isEmpty()){
@@ -76,7 +76,7 @@ public class RecipeController {
         }
     }
 
-    @AdminAccess
+    @UserAndAdminAccess
     @PutMapping("/{recipeId}")
     public ResponseEntity<RecipeDTO> updateRecipe(
             @PathVariable Integer recipeId,
@@ -89,7 +89,7 @@ public class RecipeController {
         }
     }
 
-    @AdminAccess
+    @UserAndAdminAccess
     @DeleteMapping("/{recipeId}")
     public ResponseEntity<RecipeDTO> deleteRecipe(@PathVariable Integer recipeId) {
         RecipeDTO deletedRecipe = recipeService.deleteRecipe(recipeId);

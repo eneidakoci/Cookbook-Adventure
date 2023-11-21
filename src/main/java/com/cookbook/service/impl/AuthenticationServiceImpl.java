@@ -2,11 +2,9 @@ package com.cookbook.service.impl;
 
 import com.cookbook.domain.dto.LoginResponseDTO;
 import com.cookbook.domain.dto.UserDTO;
-import com.cookbook.domain.entity.CategoryEntity;
 import com.cookbook.domain.entity.Role;
 import com.cookbook.domain.entity.UserEntity;
 import com.cookbook.domain.mapper.UserMapper;
-import com.cookbook.domain.mapper.impl.CategoryMapperImpl;
 import com.cookbook.repository.RoleRepository;
 import com.cookbook.repository.UserRepository;
 import com.cookbook.service.AuthenticationService;
@@ -54,7 +52,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                     new UsernamePasswordAuthenticationToken(username,password)
             );
             String token = tokenService.generateJwt(auth);
-            return new LoginResponseDTO(userRepository.findByUsername(username).get(), token);
+            return new LoginResponseDTO(userRepository.findByUsername(username), token);
         }catch(AuthenticationException e){
             return new LoginResponseDTO(null,"");
         }

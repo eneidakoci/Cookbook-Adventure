@@ -1,12 +1,7 @@
 package com.cookbook.service;
 import com.cookbook.domain.dto.CategoryDTO;
 import com.cookbook.domain.dto.CategoryRequest;
-import com.cookbook.domain.dto.RecipeDTO;
 import com.cookbook.domain.entity.CategoryEntity;
-import com.cookbook.domain.exception.ResourceNotFoundException;
-import com.cookbook.domain.mapper.impl.CategoryMapperImpl;
-import com.cookbook.domain.mapper.impl.RecipeMapperImpl;
-import com.cookbook.filter.Filter;
 import com.cookbook.repository.CategoryRepository;
 import com.cookbook.service.impl.CategoryServiceImpl;
 import org.junit.jupiter.api.Assertions;
@@ -18,9 +13,7 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.*;

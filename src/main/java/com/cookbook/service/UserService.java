@@ -1,5 +1,6 @@
 package com.cookbook.service;
 
+import com.cookbook.domain.entity.UserEntity;
 import com.cookbook.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,7 +17,10 @@ public class UserService implements UserDetailsService {
     private UserRepository userRepository;
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        System.out.println("Inside the UserDetailsService");
-        return userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("This user is not valid."));
+        UserEntity user = userRepository.findByUsername(username);
+        if(user == null){
+            throw new UsernameNotFoundException("This user is not valid.");
+        }
+        return user;
     }
 }

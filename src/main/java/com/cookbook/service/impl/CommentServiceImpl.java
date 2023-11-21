@@ -8,9 +8,9 @@ import com.cookbook.domain.entity.CommentEntity;
 import com.cookbook.domain.entity.MemberEntity;
 import com.cookbook.domain.entity.RecipeEntity;
 import com.cookbook.domain.exception.ResourceNotFoundException;
-import com.cookbook.domain.mapper.impl.CommentMapperImpl;
-import com.cookbook.domain.mapper.impl.MemberMapperImpl;
-import com.cookbook.domain.mapper.impl.RecipeMapperImpl;
+import com.cookbook.domain.mapper.CommentMapper;
+import com.cookbook.domain.mapper.MemberMapper;
+import com.cookbook.domain.mapper.RecipeMapper;
 import com.cookbook.filter.Filter;
 import com.cookbook.repository.CommentRepository;
 import com.cookbook.service.CommentService;
@@ -30,7 +30,7 @@ public class CommentServiceImpl implements CommentService {
     public List<CommentDTO> findAllComments(Filter...filters) {
         List<CommentEntity> comments = commentRepository.findAllComments(filters);
         return comments.stream()
-                .map(CommentMapperImpl::commentEntityToDto)
+                .map(CommentMapper::commentEntityToDto)
                 .toList();
     }
 
@@ -40,25 +40,25 @@ public class CommentServiceImpl implements CommentService {
         if(commentEntity == null){
             throw new ResourceNotFoundException("Comment does not exist.");
         }
-        return CommentMapperImpl.commentEntityToDto(commentEntity);
+        return CommentMapper.commentEntityToDto(commentEntity);
     }
 
     @Override
     public CommentDTO createComment(CommentRequest commentRequest) {
-        CommentEntity commentEntity = CommentMapperImpl.commentRequestToEntity(commentRequest);
+        CommentEntity commentEntity = CommentMapper.commentRequestToEntity(commentRequest);
         CommentEntity createdCommentEntity = commentRepository.createComment(commentEntity);
-        return CommentMapperImpl.commentEntityToDto(createdCommentEntity);
+        return CommentMapper.commentEntityToDto(createdCommentEntity);
     }
 
     @Override
     public CommentDTO updateComment(Integer id, CommentRequest commentRequest) {
         CommentEntity existingCommentEntity = commentRepository.findCommentById(id);
         if (existingCommentEntity != null) {
-            CommentEntity updatedCommentEntity = CommentMapperImpl.commentRequestToEntity(commentRequest);
+            CommentEntity updatedCommentEntity = CommentMapper.commentRequestToEntity(commentRequest);
             updatedCommentEntity.setCommentId(id);
             updatedCommentEntity.setCreatedDate(existingCommentEntity.getCreatedDate());
             CommentEntity savedCommentEntity = commentRepository.updateComment(id, updatedCommentEntity);
-            return CommentMapperImpl.commentEntityToDto(savedCommentEntity);
+            return CommentMapper.commentEntityToDto(savedCommentEntity);
         }
         return null;
     }
@@ -67,7 +67,7 @@ public class CommentServiceImpl implements CommentService {
     public CommentDTO deleteComment(Integer id) {
         try {
             CommentEntity deletedComment = commentRepository.deleteComment(id);
-            return CommentMapperImpl.commentEntityToDto(deletedComment);
+            return CommentMapper.commentEntityToDto(deletedComment);
         } catch (EntityNotFoundException e) {
             throw new RuntimeException("Category not found with id: " + id);
         }
@@ -78,7 +78,7 @@ public class CommentServiceImpl implements CommentService {
         CommentEntity commentEntity = commentRepository.findCommentById(commentId);
         if (commentEntity != null) {
             MemberEntity memberEntity = commentEntity.getMemberEntity();
-            return MemberMapperImpl.memberEntityToDto(memberEntity);
+            return MemberMapper.memberEntityToDto(memberEntity);
         }
         return null;
     }
@@ -88,7 +88,7 @@ public class CommentServiceImpl implements CommentService {
         CommentEntity commentEntity = commentRepository.findCommentById(commentId);
         if (commentEntity != null) {
             RecipeEntity recipeEntity = commentEntity.getRecipeEntity();
-            return RecipeMapperImpl.recipeEntityToDto(recipeEntity);
+            return RecipeMapper.recipeEntityToDto(recipeEntity);
         }
         return null;
     }

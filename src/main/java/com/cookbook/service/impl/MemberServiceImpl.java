@@ -1,23 +1,22 @@
 package com.cookbook.service.impl;
 
 import com.cookbook.domain.dto.*;
-import com.cookbook.domain.entity.CommentEntity;
-import com.cookbook.domain.entity.MemberEntity;
-import com.cookbook.domain.entity.RatingEntity;
-import com.cookbook.domain.entity.RecipeEntity;
+import com.cookbook.domain.entity.*;
 import com.cookbook.domain.exception.ResourceNotFoundException;
-import com.cookbook.domain.mapper.impl.*;
+import com.cookbook.domain.mapper.CommentMapper;
+import com.cookbook.domain.mapper.MemberMapper;
+import com.cookbook.domain.mapper.RatingMapper;
+import com.cookbook.domain.mapper.RecipeMapper;
 import com.cookbook.filter.Filter;
 import com.cookbook.repository.CommentRepository;
 import com.cookbook.repository.MemberRepository;
 import com.cookbook.repository.RatingRepository;
 import com.cookbook.repository.RecipeRepository;
 import com.cookbook.service.MemberService;
+import com.cookbook.service.UserService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -32,12 +31,14 @@ public class MemberServiceImpl implements MemberService {
     private RecipeRepository recipeRepository;
     @Autowired
     private RatingRepository ratingRepository;
+    @Autowired
+    private UserService userService;
 
     @Override
     public List<MemberDTO> findAllMembers(Filter...filters) {
         List<MemberEntity> members = memberRepository.findAllMembers(filters);
         return members.stream()
-                .map(MemberMapperImpl::memberEntityToDto)
+                .map(MemberMapper::memberEntityToDto)
                 .toList();
     }
 
@@ -47,25 +48,27 @@ public class MemberServiceImpl implements MemberService {
         if(memberEntity == null){
             throw new ResourceNotFoundException("Member does not exist.");
         }
-        return MemberMapperImpl.memberEntityToDto(memberEntity);
+        return MemberMapper.memberEntityToDto(memberEntity);
     }
 
     @Override
     public MemberDTO createMember(MemberRequest member) {
-        MemberEntity memberEntity = MemberMapperImpl.memberRequestToEntity(member);
+        MemberEntity memberEntity = MemberMapper.memberRequestToEntity(member);
+        UserEntity user = (UserEntity) userService.loadUserByUsername(member.getEmail());
+        memberEntity.setUserEntity(user);
         MemberEntity createdMemberEntity = memberRepository.createMember(memberEntity);
-        return MemberMapperImpl.memberEntityToDto(createdMemberEntity);
+        return MemberMapper.memberEntityToDto(createdMemberEntity);
     }
 
     @Override
     public MemberDTO updateMember(Integer id, MemberRequest member) {
         MemberEntity existingMemberEntity = memberRepository.findMemberById(id);
         if (existingMemberEntity != null) {
-            MemberEntity updatedMemberEntity = MemberMapperImpl.memberRequestToEntity(member);
+            MemberEntity updatedMemberEntity = MemberMapper.memberRequestToEntity(member);
             updatedMemberEntity.setMemberId(id);
             MemberEntity savedMemberEntity = memberRepository.updateMember(id, updatedMemberEntity);
 //            savedMemberEntity.setProfile(member.getProfileEntity());
-            return MemberMapperImpl.memberEntityToDto(savedMemberEntity);
+            return MemberMapper.memberEntityToDto(savedMemberEntity);
         }
         return null;
     }
@@ -74,7 +77,7 @@ public class MemberServiceImpl implements MemberService {
     public MemberDTO deleteMember(Integer id) {
         try {
             MemberEntity deleteMember = memberRepository.deleteMember(id);
-            return MemberMapperImpl.memberEntityToDto(deleteMember);
+            return MemberMapper.memberEntityToDto(deleteMember);
         } catch (EntityNotFoundException e) {
             throw new RuntimeException("Member not found with id: " + id);
         }
@@ -86,7 +89,7 @@ public class MemberServiceImpl implements MemberService {
         if (memberEntity != null) {
             List<RecipeEntity> recipes = recipeRepository.findRecipesByMember(memberEntity);
             return recipes.stream()
-                    .map(RecipeMapperImpl::recipeEntityToDto)
+                    .map(RecipeMapper::recipeEntityToDto)
                     .toList();
         }
         return null;
@@ -98,7 +101,7 @@ public class MemberServiceImpl implements MemberService {
         if (memberEntity != null) {
             List<CommentEntity> comments = commentRepository.findCommentsByMember(memberEntity);
             return comments.stream()
-                    .map(CommentMapperImpl::commentEntityToDto)
+                    .map(CommentMapper::commentEntityToDto)
                     .toList();
         }
         return null;
@@ -110,7 +113,7 @@ public class MemberServiceImpl implements MemberService {
         if (memberEntity != null) {
             List<RatingEntity> ratings = ratingRepository.findRatingsByMember(memberEntity);
             return ratings.stream()
-                    .map(RatingMapperImpl::ratingEntityToDto)
+                    .map(RatingMapper::ratingEntityToDto)
                     .toList();
         }
         return null;

@@ -4,27 +4,21 @@ import com.cookbook.domain.dto.MemberDTO;
 import com.cookbook.domain.dto.RatingDTO;
 import com.cookbook.domain.dto.RatingRequest;
 import com.cookbook.domain.dto.RecipeDTO;
-import com.cookbook.domain.entity.CommentEntity;
 import com.cookbook.domain.entity.MemberEntity;
 import com.cookbook.domain.entity.RatingEntity;
 import com.cookbook.domain.entity.RecipeEntity;
 import com.cookbook.domain.exception.ResourceNotFoundException;
+import com.cookbook.domain.mapper.MemberMapper;
 import com.cookbook.domain.mapper.RatingMapper;
-import com.cookbook.domain.mapper.impl.MemberMapperImpl;
-import com.cookbook.domain.mapper.impl.RatingMapperImpl;
-import com.cookbook.domain.mapper.impl.RecipeMapperImpl;
+import com.cookbook.domain.mapper.RecipeMapper;
 import com.cookbook.filter.Filter;
-import com.cookbook.repository.MemberRepository;
 import com.cookbook.repository.RatingRepository;
-import com.cookbook.repository.RecipeRepository;
 import com.cookbook.service.RatingService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class RatingServiceImpl implements RatingService {
@@ -34,7 +28,7 @@ public class RatingServiceImpl implements RatingService {
     @Override
     public List<RatingDTO> findAllRatings(Filter...filters) {
         List<RatingEntity> ratings = ratingRepository.findAllRatings(filters);
-        return ratings.stream().map(RatingMapperImpl::ratingEntityToDto).toList();
+        return ratings.stream().map(RatingMapper::ratingEntityToDto).toList();
     }
 
     @Override
@@ -43,14 +37,14 @@ public class RatingServiceImpl implements RatingService {
         if(ratingEntity == null){
             throw new ResourceNotFoundException("Rating does not exist.");
         }
-        return RatingMapperImpl.ratingEntityToDto(ratingEntity);
+        return RatingMapper.ratingEntityToDto(ratingEntity);
     }
 
     @Override
     public RatingDTO createRating(RatingRequest ratingRequest) {
-        RatingEntity ratingEntity = RatingMapperImpl.ratingRequestToEntity(ratingRequest);
+        RatingEntity ratingEntity = RatingMapper.ratingRequestToEntity(ratingRequest);
         RatingEntity savedRating = ratingRepository.createRating(ratingEntity);
-        return RatingMapperImpl.ratingEntityToDto(savedRating);
+        return RatingMapper.ratingEntityToDto(savedRating);
     }
 
     @Override
@@ -58,10 +52,10 @@ public class RatingServiceImpl implements RatingService {
         RatingEntity existingRatingOptional = ratingRepository.findRatingById(id);
 
         if (existingRatingOptional != null) {
-            RatingEntity updatedRatingEntity = RatingMapperImpl.ratingRequestToEntity(ratingRequest);
+            RatingEntity updatedRatingEntity = RatingMapper.ratingRequestToEntity(ratingRequest);
             updatedRatingEntity.setRatingId(id);
             RatingEntity savedRatingEntity = ratingRepository.updateRating(id, updatedRatingEntity);
-            return RatingMapperImpl.ratingEntityToDto(savedRatingEntity);
+            return RatingMapper.ratingEntityToDto(savedRatingEntity);
         }
         return null;
     }
@@ -70,7 +64,7 @@ public class RatingServiceImpl implements RatingService {
     public RatingDTO deleteRating(Integer id) {
         try {
             RatingEntity deleteRating = ratingRepository.deleteRating(id);
-            return RatingMapperImpl.ratingEntityToDto(deleteRating);
+            return RatingMapper.ratingEntityToDto(deleteRating);
         } catch (EntityNotFoundException e) {
             throw new RuntimeException("Rating not found with id: " + id);
         }
@@ -83,7 +77,7 @@ public class RatingServiceImpl implements RatingService {
         if (ratingEntity != null) {
             MemberEntity memberEntity = ratingEntity.getMemberEntity();
             if (memberEntity != null) {
-                return MemberMapperImpl.memberEntityToDto(memberEntity);
+                return MemberMapper.memberEntityToDto(memberEntity);
             }
         }
         return null;
@@ -96,7 +90,7 @@ public class RatingServiceImpl implements RatingService {
         if (ratingEntity != null) {
             RecipeEntity recipeEntity = ratingEntity.getRecipeEntity();
             if (recipeEntity != null) {
-                return RecipeMapperImpl.recipeEntityToDto(recipeEntity);
+                return RecipeMapper.recipeEntityToDto(recipeEntity);
             }
         }
 

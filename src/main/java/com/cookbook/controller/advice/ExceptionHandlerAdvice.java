@@ -17,19 +17,19 @@ public class ExceptionHandlerAdvice {
     public ResponseEntity<ExceptionMessage> handleResourceNotFoundException(NoResultException exp,
                                                                             HttpServletRequest req){
         var response = new ExceptionMessage(HttpStatus.BAD_REQUEST.value(), req.getRequestURI(), exp.getMessage());
-        return new ResponseEntity(response,HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(response,HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler
     public ResponseEntity<ExceptionMessage> handleGenericException(GenericException exp, HttpServletRequest req){
         var response = new ExceptionMessage(HttpStatus.BAD_REQUEST.value(), req.getRequestURI(), exp.getMessage());
-        return new ResponseEntity(response,HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(response,HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(PropertyReferenceException.class)
     public ResponseEntity<ExceptionMessage> handlePropertyReferenceException(PropertyReferenceException exp, HttpServletRequest req){
         var response = new ExceptionMessage(HttpStatus.BAD_REQUEST.value(), req.getRequestURI(), exp.getMessage());
-        return new ResponseEntity(response,HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(response,HttpStatus.BAD_REQUEST);
     }
 
 }
